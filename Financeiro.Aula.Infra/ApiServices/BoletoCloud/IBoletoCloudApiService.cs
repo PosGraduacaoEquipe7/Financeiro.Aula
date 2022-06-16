@@ -1,5 +1,6 @@
 ﻿using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
+using Financeiro.Aula.Domain.Interfaces.Repositories;
 using System.Globalization;
 
 namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
@@ -7,14 +8,21 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
     public class IBoletoCloudApiService : IGeradorBoletoApiService
     {
         private readonly HttpClient _client;
+        private readonly ParametroBoleto? _parametroBoleto;
 
-        public IBoletoCloudApiService(HttpClient client)
+        public IBoletoCloudApiService(HttpClient client, IParametroBoletoRepository parametroBoletoRepository)
         {
             _client = client;
+            _parametroBoleto = parametroBoletoRepository.ObterParametrosBoleto().Result;
         }
 
-        public async Task<(bool Sucesso, string Numero, string Token, byte[] Pdf)> GerarBoleto(Parcela parcela, string numeroBoleto)
+        public async Task<(bool Sucesso, string Numero, string Token, byte[] Pdf)> GerarBoleto(Parcela parcela)
         {
+            if (_parametroBoleto is null)
+                return (false, string.Empty, string.Empty, Array.Empty<byte>());
+
+            var numeroBoleto = _parametroBoleto.ObterProximoNumeroFormatado();
+
             var body = MontarBodyDaParcela(parcela, numeroBoleto);
 
             using (var conteudo = new FormUrlEncodedContent(body))
@@ -37,25 +45,25 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
             }
         }
 
-        private static Dictionary<string, string> MontarBodyDaParcela(Parcela parcela, string numeroBoleto)
+        private Dictionary<string, string> MontarBodyDaParcela(Parcela parcela, string numeroBoleto)
         {
             var cliente = parcela.Contrato!.Cliente!;
 
             var body = new Dictionary<string, string>
             {
-                ["boleto.conta.banco"] = "237",
-                ["boleto.conta.agencia"] = "1234-5",
-                ["boleto.conta.numero"] = "123456-0",
-                ["boleto.conta.carteira"] = "12",
-                ["boleto.beneficiario.nome"] = "Financeiro Aula Solutions",
-                ["boleto.beneficiario.cprf"] = "09.934.582/0001-58",
-                ["boleto.beneficiario.endereco.cep"] = "59020-000",
-                ["boleto.beneficiario.endereco.uf"] = "RS",
-                ["boleto.beneficiario.endereco.localidade"] = "Porto Alegre",
-                ["boleto.beneficiario.endereco.bairro"] = "Petrópolis",
-                ["boleto.beneficiario.endereco.logradouro"] = "Avenida Financeiro",
-                ["boleto.beneficiario.endereco.numero"] = "123",
-                ["boleto.beneficiario.endereco.complemento"] = "Sala 2A",
+                ["boleto.conta.banco"] = _parametroBoleto!.Banco,
+                ["boleto.conta.agencia"] = _parametroBoleto.Agencia,
+                ["boleto.conta.numero"] = _parametroBoleto.NumeroConta,
+                ["boleto.conta.carteira"] = _parametroBoleto.Carteira,
+                ["boleto.beneficiario.nome"] = _parametroBoleto.NomeBeneficiario,
+                ["boleto.beneficiario.cprf"] = _parametroBoleto.CnpjBeneficiario,
+                ["boleto.beneficiario.endereco.cep"] = _parametroBoleto.EnderecoBeneficiario.Cep,
+                ["boleto.beneficiario.endereco.uf"] = _parametroBoleto.EnderecoBeneficiario.Uf,
+                ["boleto.beneficiario.endereco.localidade"] = _parametroBoleto.EnderecoBeneficiario.Municipio,
+                ["boleto.beneficiario.endereco.bairro"] = _parametroBoleto.EnderecoBeneficiario.Bairro,
+                ["boleto.beneficiario.endereco.logradouro"] = _parametroBoleto.EnderecoBeneficiario.Logradouro,
+                ["boleto.beneficiario.endereco.numero"] = _parametroBoleto.EnderecoBeneficiario.Numero,
+                ["boleto.beneficiario.endereco.complemento"] = _parametroBoleto.EnderecoBeneficiario.Complemento,
                 ["boleto.emissao"] = DateTime.Now.ToString("yyyy-MM-dd"),
                 ["boleto.vencimento"] = parcela.DataVencimento.ToString("yyyy-MM-dd"),
                 ["boleto.documento"] = $"CTR{parcela.ContratoId}",

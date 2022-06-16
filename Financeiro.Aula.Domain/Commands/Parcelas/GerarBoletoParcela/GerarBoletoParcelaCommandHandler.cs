@@ -25,9 +25,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             if (parcela.Paga)
                 return (false, "A parcela já está paga", string.Empty);
 
-            var numeroBoleto = "12345678908-P"; // TODO: buscar de algum lugar
-
-            var resultado = await _geradorBoletoApiService.GerarBoleto(parcela, numeroBoleto);
+            var resultado = await _geradorBoletoApiService.GerarBoleto(parcela);
 
             if (!resultado.Sucesso)
                 return (false, "Erro ao gerar o boleto", string.Empty);

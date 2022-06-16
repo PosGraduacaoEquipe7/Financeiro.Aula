@@ -21,8 +21,6 @@ namespace Financeiro.Aula.Infra.Repositories
 
         public async Task<IEnumerable<Cliente>> ListarClientes(string? nome)
         {
-            _context.Database.EnsureCreated();
-
             return await _context.Clientes
                             .Where(c => 
                                 string.IsNullOrEmpty(nome) || c.Nome.Contains(nome))
