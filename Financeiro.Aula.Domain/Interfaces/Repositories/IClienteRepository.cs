@@ -4,7 +4,9 @@ namespace Financeiro.Aula.Domain.Interfaces.Repositories
 {
     public interface IClienteRepository
     {
-        Task<IEnumerable<Cliente>> ListarClientes();
+        Task<Cliente?> ObterCliente(long id);
+        Task<IEnumerable<Cliente>> ListarClientes(string? nome);
         Task<Cliente?> IncluirCliente(Cliente cliente);
+        Task AtualizarCliente(Cliente cliente);
     }
 }

@@ -15,7 +15,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.ListarParcelas
 
         public Task<IEnumerable<Parcela>> Handle(ListarParcelasCommand request, CancellationToken cancellationToken)
         {
-            return _parcelaRepository.ListarParcelas();
+            return _parcelaRepository.ListarParcelas(request.ContratoId);
         }
     }
 }

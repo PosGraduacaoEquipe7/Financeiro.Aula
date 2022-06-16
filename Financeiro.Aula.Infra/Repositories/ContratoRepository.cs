@@ -1,6 +1,7 @@
 ﻿using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Infra.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Financeiro.Aula.Infra.Repositories
 {
@@ -13,9 +14,29 @@ namespace Financeiro.Aula.Infra.Repositories
             _context = context;
         }
 
+        public async Task<Contrato?> ObterContrato(long id)
+        {
+            return await _context.Contratos.Where(c => c.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Contrato>> ListarContratos(long? clienteId)
+        {
+            return await _context.Contratos
+                            .Where(c => clienteId == null || c.ClienteId == clienteId.Value)
+                            .OrderBy(c => c.DataEmissao)
+                            .ToListAsync();
+        }
+
         public async Task IncluirContrato(Contrato contrato)
         {
             await _context.Contratos.AddAsync(contrato);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task AlterarContrato(Contrato contrato)
+        {
+            await Task.Run(() => _context.Contratos.Update(contrato));
             await _context.SaveChangesAsync();
         }
     }

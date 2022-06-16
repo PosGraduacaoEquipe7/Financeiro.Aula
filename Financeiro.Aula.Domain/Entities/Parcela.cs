@@ -10,21 +10,40 @@
 
         public DateTime DataVencimento { get; private set; }
 
+        public DateTime? DataPagamento { get; private set; }
+
         public long ContratoId { get; private set; }
 
         public virtual Contrato? Contrato { get; private set; }
+
+        public string? NumeroBoleto { get; private set; }
+
+        public string? ChaveBoleto { get; private set; }
+
+        public bool Paga => DataPagamento is not null;
 
         private Parcela()
         {
         }
 
-        public Parcela(long id, int sequencial, decimal valor, DateTime dataVencimento, long contratoId)
+        public Parcela(long id, int sequencial, decimal valor, DateTime dataVencimento, Contrato contrato)
         {
             Id = id;
             Sequencial = sequencial;
             Valor = valor;
             DataVencimento = dataVencimento;
-            ContratoId = contratoId;
+            Contrato = contrato;
+        }
+
+        public void Pagar()
+        {
+            DataPagamento = DateTime.Now.Date;
+        }
+
+        public void RegistrarBoleto(string numeroBoleto, string chaveBoleto)
+        {
+            NumeroBoleto = numeroBoleto;
+            ChaveBoleto = chaveBoleto;
         }
     }
 }

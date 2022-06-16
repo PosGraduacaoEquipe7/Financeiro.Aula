@@ -23,7 +23,12 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
 
             for (int i = 1; i <= request.NumeroParcelas; i++)
             {
-                var parcela = new Parcela(id: 0, sequencial: i, valor: request.ValorTotal / request.NumeroParcelas, dataVencimento: request.DataEmissao.AddMonths(i - 1), contratoId: 0);
+                var parcela = new Parcela(
+                    id: 0,
+                    sequencial: i,
+                    valor: request.ValorTotal / request.NumeroParcelas,
+                    dataVencimento: request.DataEmissao.AddMonths(i - 1),
+                    contrato: contrato);
 
                 await _parcelaRepository.IncluirParcela(parcela);
             }

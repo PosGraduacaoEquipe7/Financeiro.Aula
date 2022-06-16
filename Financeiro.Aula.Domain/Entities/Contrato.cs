@@ -10,6 +10,8 @@
 
         // PRODUTO
 
+        public bool Cancelado { get; private set; }
+
         public long ClienteId { get; private set; }
 
         public virtual Cliente? Cliente { get; private set; }
@@ -27,7 +29,14 @@
             ValorTotal = valorTotal;
             ClienteId = clienteId;
 
+            Cancelado = false;
+
             Parcelas = new HashSet<Parcela>();
+        }
+
+        public void Cancelar()
+        {
+            Cancelado = true;
         }
     }
 }

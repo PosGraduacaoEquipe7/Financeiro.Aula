@@ -27,5 +27,12 @@ namespace Financeiro.Aula.Domain.Entities
 
             Contratos = new HashSet<Contrato>();
         }
+
+        public void AtualizarCadastro(string nome, string cpf, Endereco endereco)
+        {
+            Nome = nome;
+            Cpf = cpf;
+            Endereco = endereco;
+        }
     }
 }

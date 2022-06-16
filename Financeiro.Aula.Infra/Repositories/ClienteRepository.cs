@@ -14,9 +14,20 @@ namespace Financeiro.Aula.Infra.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Cliente>> ListarClientes()
+        public async Task<Cliente?> ObterCliente(long id)
         {
-            return await _context.Clientes.OrderBy(c => c.Nome).ToListAsync();
+            return await _context.Clientes.Where(c => c.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Cliente>> ListarClientes(string? nome)
+        {
+            _context.Database.EnsureCreated();
+
+            return await _context.Clientes
+                            .Where(c => 
+                                string.IsNullOrEmpty(nome) || c.Nome.Contains(nome))
+                            .OrderBy(c => c.Nome)
+                            .ToListAsync();
         }
 
         public async Task<Cliente?> IncluirCliente(Cliente cliente)
@@ -25,6 +36,12 @@ namespace Financeiro.Aula.Infra.Repositories
             await _context.SaveChangesAsync();
 
             return cliente;
+        }
+
+        public async Task AtualizarCliente(Cliente cliente)
+        {
+            await Task.Run(() => _context.Clientes.Update(cliente));
+            await _context.SaveChangesAsync();
         }
     }
 }
