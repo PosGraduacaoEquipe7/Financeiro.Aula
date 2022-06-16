@@ -1,25 +1,43 @@
-﻿using Financeiro.Aula.Domain.Entities;
+﻿using Financeiro.Aula.Domain.DTOs;
+using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
-using System.Globalization;
 
 namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
 {
-    public class IBoletoCloudApiService : IGeradorBoletoApiService
+    public class BoletoCloudApiService : IGeradorBoletoApiService
     {
         private readonly HttpClient _client;
         private readonly ParametroBoleto? _parametroBoleto;
 
-        public IBoletoCloudApiService(HttpClient client, IParametroBoletoRepository parametroBoletoRepository)
+        public BoletoCloudApiService(HttpClient client, IParametroBoletoRepository parametroBoletoRepository)
         {
             _client = client;
             _parametroBoleto = parametroBoletoRepository.ObterParametrosBoleto().Result;
         }
 
-        public async Task<(bool Sucesso, string Numero, string Token, byte[] Pdf)> GerarBoleto(Parcela parcela)
+        public async Task<(bool Sucesso, byte[] Pdf)> ObterPdfBoleto(Parcela parcela)
+        {
+            if (parcela.ChaveBoleto is null)
+                return (false, Array.Empty<byte>());
+
+            var response = await _client.GetAsync($"boletos/{parcela.ChaveBoleto}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                //var erro = response.Content.ReadAsStringAsync();
+                return new(false, Array.Empty<byte>());
+            }
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+
+            return new(true, bytes);
+        }
+
+        public async Task<CriacaoBoletoDto> GerarBoleto(Parcela parcela)
         {
             if (_parametroBoleto is null)
-                return (false, string.Empty, string.Empty, Array.Empty<byte>());
+                return new(false, string.Empty, string.Empty, Array.Empty<byte>());
 
             var numeroBoleto = _parametroBoleto.ObterProximoNumeroFormatado();
 
@@ -34,14 +52,14 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var erro = response.Content.ReadAsStringAsync();
-                    return (false, string.Empty, string.Empty, Array.Empty<byte>());
+                    //var erro = response.Content.ReadAsStringAsync();
+                    return new(false, string.Empty, string.Empty, Array.Empty<byte>());
                 }
 
                 var token = ObterTokenDoHeader(response);
                 var bytes = await response.Content.ReadAsByteArrayAsync();
 
-                return (true, numeroBoleto, token, bytes);
+                return new(true, numeroBoleto, token, bytes);
             }
         }
 
@@ -89,17 +107,19 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
 
         private static string ObterTokenDoHeader(HttpResponseMessage response)
         {
-            var token = string.Empty;
-
             if (response.Headers.Contains("Location"))
             {
                 var location = response.Headers.GetValues("Location");
 
                 if (location.Any())
-                    token = location.First();
+                {
+                    var token = location.First();
+
+                    return token.Split('/').Last();
+                }
             }
 
-            return token;
+            return String.Empty;
         }
     }
 }

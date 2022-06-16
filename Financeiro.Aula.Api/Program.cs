@@ -19,7 +19,7 @@ builder.Services.AddScoped<IContratoRepository, ContratoRepository>();
 builder.Services.AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>();
 builder.Services.AddScoped<IParcelaRepository, ParcelaRepository>();
 
-builder.Services.AddHttpClient<IGeradorBoletoApiService, IBoletoCloudApiService>(client =>
+builder.Services.AddHttpClient<IGeradorBoletoApiService, BoletoCloudApiService>(client =>
 {
     var token = $"{builder.Configuration["ApiBoletoCloud:ApiKey"]}:token";
 

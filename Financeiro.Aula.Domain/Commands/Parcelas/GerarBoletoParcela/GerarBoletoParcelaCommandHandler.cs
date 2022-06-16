@@ -25,6 +25,9 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             if (parcela.Paga)
                 return (false, "A parcela já está paga", string.Empty);
 
+            if (parcela.TemBoleto && !request.ConfirmaSobrescrever)
+                return (false, "A parcela já possui boleto gerado", string.Empty);
+
             var resultado = await _geradorBoletoApiService.GerarBoleto(parcela);
 
             if (!resultado.Sucesso)

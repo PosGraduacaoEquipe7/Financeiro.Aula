@@ -1,5 +1,6 @@
 ﻿using Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela;
 using Financeiro.Aula.Domain.Commands.Parcelas.ListarParcelas;
+using Financeiro.Aula.Domain.Commands.Parcelas.ObterPdfBoletoParcela;
 using Financeiro.Aula.Domain.Commands.Parcelas.PagarParcela;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -37,9 +38,20 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpPost("{id}/gerar-boleto")]
-        public async Task<IActionResult> GerarBoletoParcela([FromRoute] long id)
+        public async Task<IActionResult> GerarBoletoParcela([FromRoute] long id, [FromQuery] bool confirmaSobrescrever)
         {
-            var retorno = await _mediator.Send(new GerarBoletoParcelaCommand(id));
+            var retorno = await _mediator.Send(new GerarBoletoParcelaCommand(id, confirmaSobrescrever));
+
+            if (!retorno.Sucesso)
+                return BadRequest(retorno.Mensagem);
+
+            return Ok(retorno.Pdf);
+        }
+
+        [HttpGet("{id}/obter-boleto")]
+        public async Task<IActionResult> ObterPdfBoletoParcela([FromRoute] long id)
+        {
+            var retorno = await _mediator.Send(new ObterPdfBoletoParcelaCommand(id));
 
             if (!retorno.Sucesso)
                 return BadRequest(retorno.Mensagem);

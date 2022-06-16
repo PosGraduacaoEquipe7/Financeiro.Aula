@@ -22,6 +22,8 @@
 
         public bool Paga => DataPagamento is not null;
 
+        public bool TemBoleto => !string.IsNullOrEmpty(NumeroBoleto);
+
         private Parcela()
         {
         }
