@@ -4,6 +4,8 @@ Projeto da cadeira de **Projeto e Arquitetura de Software** da Pós de Engenhari
 
 ## Docker
 
+imagem docker está disponível no registry ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
+
 ### Executar imagem
 ```
 docker run -it -p 5000:5000 -p 5001:5001 -e ASPNETCORE_HTTP_PORT=https://+:5001 -e ASPNETCORE_URLS=http://+:5000 -e ASPNETCORE_ENVIRONMENT=Development  ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
