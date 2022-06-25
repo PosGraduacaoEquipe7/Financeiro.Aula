@@ -21,4 +21,10 @@
     <Folder Include="Db\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Db\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
