@@ -31,7 +31,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             var resultado = await _geradorBoletoApiService.GerarBoleto(parcela);
 
             if (!resultado.Sucesso)
-                return (false, "Erro ao gerar o boleto", string.Empty);
+                return (false, $"Erro ao gerar o boleto: {resultado.MensagemErro}", string.Empty);
 
             parcela.RegistrarBoleto(resultado.Numero, resultado.Token);
             await _parcelaRepository.AlterarParcela(parcela);

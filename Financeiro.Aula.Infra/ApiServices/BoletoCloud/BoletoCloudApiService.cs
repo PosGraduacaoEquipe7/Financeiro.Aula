@@ -25,7 +25,6 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
 
             if (!response.IsSuccessStatusCode)
             {
-                //var erro = response.Content.ReadAsStringAsync();
                 return new(false, Array.Empty<byte>());
             }
 
@@ -37,7 +36,7 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
         public async Task<CriacaoBoletoDto> GerarBoleto(Parcela parcela)
         {
             if (_parametroBoleto is null)
-                return new(false, string.Empty, string.Empty, Array.Empty<byte>());
+                return new(false, "Parâmetros em branco", string.Empty, string.Empty, Array.Empty<byte>());
 
             var numeroBoleto = _parametroBoleto.ObterProximoNumeroFormatado();
 
@@ -52,14 +51,14 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    //var erro = response.Content.ReadAsStringAsync();
-                    return new(false, string.Empty, string.Empty, Array.Empty<byte>());
+                    var erro = await response.Content.ReadAsStringAsync();
+                    return new(false, erro, string.Empty, string.Empty, Array.Empty<byte>());
                 }
 
                 var token = ObterTokenDoHeader(response);
                 var bytes = await response.Content.ReadAsByteArrayAsync();
 
-                return new(true, numeroBoleto, token, bytes);
+                return new(true, string.Empty, numeroBoleto, token, bytes);
             }
         }
 

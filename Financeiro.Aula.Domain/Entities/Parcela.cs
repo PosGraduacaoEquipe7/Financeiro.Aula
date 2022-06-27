@@ -28,13 +28,13 @@
         {
         }
 
-        public Parcela(long id, int sequencial, decimal valor, DateTime dataVencimento, Contrato contrato)
+        public Parcela(long id, int sequencial, decimal valor, DateTime dataVencimento, long contratoId)
         {
             Id = id;
             Sequencial = sequencial;
             Valor = valor;
             DataVencimento = dataVencimento;
-            Contrato = contrato;
+            ContratoId = contratoId;
         }
 
         public void Pagar()
