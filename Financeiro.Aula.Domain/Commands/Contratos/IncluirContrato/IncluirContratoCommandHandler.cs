@@ -27,8 +27,8 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
                     id: 0,
                     sequencial: i,
                     valor: request.ValorTotal / request.NumeroParcelas,
-                    dataVencimento: request.DataEmissao.AddMonths(i - 1),
-                    contrato: contrato);
+                    dataVencimento: request.DataPrimeiroVencimento.AddMonths(i - 1),
+                    contratoId: contrato.Id);
 
                 await _parcelaRepository.IncluirParcela(parcela);
             }

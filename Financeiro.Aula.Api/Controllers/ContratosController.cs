@@ -1,4 +1,5 @@
-﻿using Financeiro.Aula.Domain.Commands.Contratos.CancelarContrato;
+﻿using Financeiro.Aula.Api.Models.Contratos.Mappers;
+using Financeiro.Aula.Domain.Commands.Contratos.CancelarContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.ListarContratos;
 using MediatR;
@@ -33,7 +34,9 @@ namespace Financeiro.Aula.Api.Controllers
             if (contrato == null)
                 return BadRequest();
 
-            return Created(contrato.Id.ToString(), contrato);
+            var response = IncluirContratoResponseMapper.Map(contrato);
+
+            return Created(contrato.Id.ToString(), response);
         }
 
         [HttpPut("{id}/cancelar")]
