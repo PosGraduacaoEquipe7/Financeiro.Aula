@@ -11,7 +11,7 @@ Projeto da cadeira de **Projeto e Arquitetura de Software** da Pós de Engenhari
 
 ## Docker
 
-imagem docker está disponível no registry ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
+A imagem Docker está disponível no registry: ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
 
 ### Baixar imagem
 ```
@@ -23,8 +23,11 @@ docker pull ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
 docker run -it -p 5000:5000 ghcr.io/posgraduacaoequipe7/financeiro.aula:v1
 ```
 
+### Rodar projeto no navegador
+http://localhost:5000
+
 ### Se preferir gerar imagem local e executar
 ```
-docker build . -t financeiro_aula
-docker run -it -p 5000:5000 financeiro_aula
+docker build . -t financeiro.aula
+docker run -it -p 5000:5000 financeiro.aula
 ```
