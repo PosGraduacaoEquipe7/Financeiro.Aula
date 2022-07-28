@@ -24,7 +24,7 @@ namespace Financeiro.Aula.Domain.Entities
 
         public Endereco EnderecoBeneficiario { get; private set; }
 
-        private ParametroBoleto()
+        private ParametroBoleto() : this(default, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, default, string.Empty, string.Empty, null!)
         {
         }
 

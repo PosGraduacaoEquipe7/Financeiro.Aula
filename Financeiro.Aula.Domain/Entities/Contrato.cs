@@ -18,7 +18,7 @@
 
         public virtual ICollection<Parcela> Parcelas { get; private set; }
 
-        private Contrato()
+        private Contrato() : this(default, default, default, default)
         {
         }
 

@@ -14,7 +14,7 @@ namespace Financeiro.Aula.Domain.Entities
 
         public virtual ICollection<Contrato> Contratos { get; private set; }
 
-        private Cliente()
+        private Cliente() : this(default, string.Empty, string.Empty, null!)
         {
         }
 

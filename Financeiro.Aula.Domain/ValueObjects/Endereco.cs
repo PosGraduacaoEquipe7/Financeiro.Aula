@@ -16,7 +16,7 @@
 
         public string Uf { get; private set; }
 
-        private Endereco()
+        private Endereco() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
         {
         }
 
