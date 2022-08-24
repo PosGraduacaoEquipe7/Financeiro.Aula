@@ -8,7 +8,7 @@
 
         public string Numero { get; private set; }
 
-        public string Complemento { get; private set; }
+        public string? Complemento { get; private set; }
 
         public string Bairro { get; private set; }
 
@@ -20,7 +20,7 @@
         {
         }
 
-        public Endereco(string cep, string logradouro, string numero, string complemento, string bairro, string municipio, string uf)
+        public Endereco(string cep, string logradouro, string numero, string? complemento, string bairro, string municipio, string uf)
         {
             Cep = cep;
             Logradouro = logradouro;

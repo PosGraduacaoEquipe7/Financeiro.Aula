@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<FinanceiroDb>(options => options.UseSqlite("DataSource=Db/Financeiro.db"));
 
-builder.Services.DeclareRepositorys();
-builder.Services.DeclareApiServices(builder.Configuration);
+builder.Services
+    .DeclareRepositorys()
+    .DeclareServices()
+    .DeclareApiServices(builder.Configuration);
 
 var domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Aula.Domain");
 builder.Services.AddMediatR(domainAssembly);

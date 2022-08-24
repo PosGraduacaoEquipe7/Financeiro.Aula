@@ -66,6 +66,8 @@ namespace Financeiro.Aula.Infra.ApiServices.BoletoCloud
         {
             var cliente = parcela.Contrato!.Cliente!;
 
+            // TODO: carregar os dados da empresa
+
             var body = new Dictionary<string, string>
             {
                 ["boleto.conta.banco"] = _parametroBoleto!.Banco,

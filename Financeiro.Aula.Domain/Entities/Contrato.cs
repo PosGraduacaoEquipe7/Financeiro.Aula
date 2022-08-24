@@ -8,13 +8,13 @@
 
         public decimal ValorTotal { get; private set; }
 
-        // PRODUTO
-
         public bool Cancelado { get; private set; }
 
         public long ClienteId { get; private set; }
 
         public virtual Cliente? Cliente { get; private set; }
+
+        public virtual Turma Turma { get; private set; } = null!;
 
         public virtual ICollection<Parcela> Parcelas { get; private set; }
 
@@ -37,6 +37,11 @@
         public void Cancelar()
         {
             Cancelado = true;
+        }
+
+        public void AgregarTurma(Turma turma)
+        {
+            Turma = turma;
         }
     }
 }

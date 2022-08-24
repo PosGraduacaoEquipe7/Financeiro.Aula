@@ -14,6 +14,8 @@ namespace Financeiro.Aula.Infra.Context.Mappers
                    .WithOne(c => c.Contrato)
                    .HasForeignKey(c => c.ContratoId)
                    .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Ignore(c => c.Turma);
         }
     }
 }
