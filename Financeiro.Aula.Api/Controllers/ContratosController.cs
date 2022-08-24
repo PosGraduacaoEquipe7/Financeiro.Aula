@@ -1,5 +1,6 @@
 ﻿using Financeiro.Aula.Api.Models.Contratos.Mappers;
 using Financeiro.Aula.Domain.Commands.Contratos.CancelarContrato;
+using Financeiro.Aula.Domain.Commands.Contratos.ImprimirContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.ListarContratos;
 using MediatR;
@@ -48,6 +49,17 @@ namespace Financeiro.Aula.Api.Controllers
                 return BadRequest(retorno.Mensagem);
 
             return Ok();
+        }
+
+        [HttpGet("{id}/termos")]
+        public async Task<IActionResult> GerarTermoAceite([FromRoute] long id)
+        {
+            var retorno = await _mediator.Send(new ImprimirContratoCommand(id));
+
+            if (!retorno.Sucesso)
+                return BadRequest(retorno.Mensagem);
+
+            return Ok(retorno.Contrato);
         }
     }
 }

@@ -10,19 +10,28 @@ namespace Financeiro.Aula.Domain.Entities
 
         public string Cpf { get; private set; }
 
+        public string Identidade { get; private set; }
+
+        public DateTime DataNascimento { get; private set; }
+
+        public string Telefone { get; private set; }
+
         public Endereco Endereco { get; private set; }
 
         public virtual ICollection<Contrato> Contratos { get; private set; }
 
-        private Cliente() : this(default, string.Empty, string.Empty, null!)
+        private Cliente() : this(default, string.Empty, string.Empty, string.Empty, DateTime.Now, string.Empty, null!)
         {
         }
 
-        public Cliente(long id, string nome, string cpf, Endereco endereco)
+        public Cliente(long id, string nome, string cpf, string identidade, DateTime dataNascimento, string telefone, Endereco endereco)
         {
             Id = id;
             Nome = nome;
             Cpf = cpf;
+            Identidade = identidade;
+            DataNascimento = dataNascimento;
+            Telefone = telefone;
             Endereco = endereco;
 
             Contratos = new HashSet<Contrato>();

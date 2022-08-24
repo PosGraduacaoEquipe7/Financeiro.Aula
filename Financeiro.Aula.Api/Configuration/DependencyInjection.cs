@@ -1,9 +1,11 @@
-using System.Net.Http.Headers;
 using Financeiro.Aula.Domain.Extensions;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
+using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
+using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Infra.ApiServices.BoletoCloud;
 using Financeiro.Aula.Infra.Repositories;
+using System.Net.Http.Headers;
 
 namespace Financeiro.Aula.Api.Configuration
 {
@@ -13,8 +15,17 @@ namespace Financeiro.Aula.Api.Configuration
         {
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IContratoRepository, ContratoRepository>();
+            services.AddScoped<IEmpresaRepository, EmpresaMockRepository>();
             services.AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>();
             services.AddScoped<IParcelaRepository, ParcelaRepository>();
+            services.AddScoped<ITurmaRepository, TurmaMockRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection DeclareServices(this IServiceCollection services)
+        {
+            services.AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>();
 
             return services;
         }

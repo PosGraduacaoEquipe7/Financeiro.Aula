@@ -15,7 +15,14 @@ namespace Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente
 
         public async Task<Cliente> Handle(IncluirClienteCommand request, CancellationToken cancellationToken)
         {
-            var cliente = new Cliente(id: 0, nome: request.Nome, cpf: request.Cpf, endereco: request.Endereco);
+            var cliente = new Cliente(
+                id: 0,
+                nome: request.Nome,
+                cpf: request.Cpf,
+                identidade: request.Identidade,
+                dataNascimento: request.DataNascimento,
+                telefone: request.Telefone,
+                endereco: request.Endereco);
 
             await _clienteRepository.IncluirCliente(cliente);
 
