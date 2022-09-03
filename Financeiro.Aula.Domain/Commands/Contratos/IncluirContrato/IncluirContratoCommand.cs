@@ -7,7 +7,7 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
     {
         public DateTime DataEmissao { get; set; }
 
-        public decimal ValorTotal { get; set; }
+        public double ValorTotal { get; set; }
 
         public int NumeroParcelas { get; set; }
 

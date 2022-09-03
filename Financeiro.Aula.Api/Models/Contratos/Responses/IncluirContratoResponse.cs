@@ -6,7 +6,7 @@ namespace Financeiro.Aula.Api.Models.Contratos.Responses
 
         public DateTime DataEmissao { get; init; }
 
-        public decimal ValorTotal { get; init; }
+        public double ValorTotal { get; init; }
 
         public long ClienteId { get; init; }
     }

@@ -15,6 +15,7 @@ namespace Financeiro.Aula.Api.Configuration
         {
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IContratoRepository, ContratoRepository>();
+            services.AddScoped<ICursoRepository, CursoMockRepository>();
             services.AddScoped<IEmpresaRepository, EmpresaMockRepository>();
             services.AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>();
             services.AddScoped<IParcelaRepository, ParcelaRepository>();
@@ -25,7 +26,8 @@ namespace Financeiro.Aula.Api.Configuration
 
         public static IServiceCollection DeclareServices(this IServiceCollection services)
         {
-            services.AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>();
+            services
+                .AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>();
 
             return services;
         }

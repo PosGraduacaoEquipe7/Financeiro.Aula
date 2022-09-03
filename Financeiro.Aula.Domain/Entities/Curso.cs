@@ -8,11 +8,14 @@ namespace Financeiro.Aula.Domain.Entities
 
         public double CargaHoraria { get; private set; }
 
-        public Curso(long id, string descricao, double cargaHoraria)
+        public double ValorBruto { get; private set; }
+
+        public Curso(long id, string descricao, double cargaHoraria, double valorBruto)
         {
             Id = id;
             Descricao = descricao;
             CargaHoraria = cargaHoraria;
+            ValorBruto = valorBruto;
         }
     }
 }

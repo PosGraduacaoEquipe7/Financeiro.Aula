@@ -6,7 +6,7 @@
 
         public int Sequencial { get; private set; }
 
-        public decimal Valor { get; private set; }
+        public double Valor { get; private set; }
 
         public DateTime DataVencimento { get; private set; }
 
@@ -28,7 +28,7 @@
         {
         }
 
-        public Parcela(long id, int sequencial, decimal valor, DateTime dataVencimento, long contratoId)
+        public Parcela(long id, int sequencial, double valor, DateTime dataVencimento, long contratoId)
         {
             Id = id;
             Sequencial = sequencial;

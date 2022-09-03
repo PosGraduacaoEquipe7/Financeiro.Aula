@@ -21,6 +21,7 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
 
             await _contratoRepository.IncluirContrato(contrato);
 
+            // TODO: criar um Service que gera um array de parcelas
             for (int i = 1; i <= request.NumeroParcelas; i++)
             {
                 var parcela = new Parcela(

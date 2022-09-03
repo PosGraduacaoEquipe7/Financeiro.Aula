@@ -19,6 +19,11 @@ namespace Financeiro.Aula.Infra.Repositories
             return await _context.Clientes.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<bool> VerificarCpfExiste(string cpf)
+        {
+            return await _context.Clientes.AnyAsync(c => c.Cpf == cpf);
+        }
+
         public async Task<IEnumerable<Cliente>> ListarClientes(string? nome)
         {
             return await _context.Clientes

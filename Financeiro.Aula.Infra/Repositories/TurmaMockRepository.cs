@@ -13,8 +13,9 @@ namespace Financeiro.Aula.Infra.Repositories
                 horario: "Seg-Qua-Sex, 19h30-22h30",
                 curso: new Curso(
                     id: 1,
-                    descricao: "Engenharia de Software",
-                    cargaHoraria: 100
+                    descricao: "Nutrição",
+                    cargaHoraria: 100,
+                    valorBruto: 5000
                 ),
                 dataInicio: new DateTime(2023, 3, 13),
                 dataTermino: new DateTime(2023, 7, 28)
