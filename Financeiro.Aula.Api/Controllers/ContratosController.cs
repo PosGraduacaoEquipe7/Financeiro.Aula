@@ -59,7 +59,8 @@ namespace Financeiro.Aula.Api.Controllers
             if (!retorno.Sucesso)
                 return BadRequest(retorno.Mensagem);
 
-            return Ok(retorno.Contrato);
+            //return Ok(retorno.Contrato);
+            return File(retorno.Contrato, "application/pdf");
         }
     }
 }

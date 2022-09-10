@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Contratos.ImprimirContrato
 {
-    public class ImprimirContratoCommandHandler : IRequestHandler<ImprimirContratoCommand, (bool Sucesso, string Mensagem, string Contrato)>
+    public class ImprimirContratoCommandHandler : IRequestHandler<ImprimirContratoCommand, (bool Sucesso, string Mensagem, byte[]? Contrato)>
     {
         private readonly IGeradorContratoPdfService _geradorContratoPdfService;
         private readonly IContratoRepository _contratoRepository;
@@ -17,15 +17,15 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.ImprimirContrato
             _turmaRepository = turmaRepository;
         }
 
-        public async Task<(bool Sucesso, string Mensagem, string Contrato)> Handle(ImprimirContratoCommand request, CancellationToken cancellationToken)
+        public async Task<(bool Sucesso, string Mensagem, byte[]? Contrato)> Handle(ImprimirContratoCommand request, CancellationToken cancellationToken)
         {
             var contrato = await _contratoRepository.ObterContratoComParcelasECliente(request.Id);
 
             if (contrato is null)
-                return (false, "Contrato não encontrado", string.Empty);
+                return (false, "Contrato não encontrado", null);
 
             if (contrato.Cancelado)
-                return (false, "O contrato está cancelado", string.Empty);
+                return (false, "O contrato está cancelado", null);
 
             // TODO: validar se o contrato é do aluno logado
 
@@ -37,15 +37,15 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.ImprimirContrato
             {
                 var pdfStream = await _geradorContratoPdfService.GerarContratoMatricula(contrato);
                 if (pdfStream is null)
-                    return (false, "Não foi possível gerar o PDF do documento", string.Empty);
+                    return (false, "Não foi possível gerar o PDF do documento", null);
 
-                string pdf = Convert.ToBase64String(pdfStream);
+                //string pdf = Convert.ToBase64String(pdfStream);
 
-                return (true, string.Empty, pdf);
+                return (true, string.Empty, pdfStream);
             }
             catch (Exception ex)
             {
-                return (false, $"Ocorreu um erro ao gerar o PDF do documento: {ex.Message}", string.Empty);
+                return (false, $"Ocorreu um erro ao gerar o PDF do documento: {ex.Message}", null);
             }
         }
     }
