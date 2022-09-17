@@ -1,7 +1,9 @@
 using Financeiro.Aula.Domain.Extensions;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
+using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
+using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Infra.ApiServices.BoletoCloud;
 using Financeiro.Aula.Infra.Repositories;
@@ -28,6 +30,14 @@ namespace Financeiro.Aula.Api.Configuration
         {
             services
                 .AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>();
+
+            return services;
+        }
+
+        public static IServiceCollection DeclareDomainServices(this IServiceCollection services)
+        {
+            services
+                .AddScoped<IParcelaService, ParcelaService>();
 
             return services;
         }

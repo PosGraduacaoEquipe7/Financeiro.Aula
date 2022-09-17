@@ -7,6 +7,7 @@ namespace Financeiro.Aula.Domain.Interfaces.Repositories
         Task<Parcela?> ObterParcela(long id);
         Task<IEnumerable<Parcela>> ListarParcelas(long? contratoId);
         Task IncluirParcela(Parcela parcela);
+        Task IncluirParcelas(IEnumerable<Parcela> parcelas);
         Task AlterarParcela(Parcela parcela);
     }
 }

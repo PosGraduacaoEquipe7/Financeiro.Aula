@@ -1,4 +1,5 @@
 ﻿using Financeiro.Aula.Domain.Entities;
+using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -8,11 +9,13 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
     {
         private readonly IContratoRepository _contratoRepository;
         private readonly IParcelaRepository _parcelaRepository;
+        private readonly IParcelaService _parcelaService;
 
-        public IncluirContratoCommandHandler(IContratoRepository contratoRepository, IParcelaRepository parcelaRepository)
+        public IncluirContratoCommandHandler(IContratoRepository contratoRepository, IParcelaRepository parcelaRepository, IParcelaService parcelaService)
         {
             _contratoRepository = contratoRepository;
             _parcelaRepository = parcelaRepository;
+            _parcelaService = parcelaService;
         }
 
         public async Task<Contrato> Handle(IncluirContratoCommand request, CancellationToken cancellationToken)
@@ -21,18 +24,10 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
 
             await _contratoRepository.IncluirContrato(contrato);
 
-            // TODO: criar um Service que gera um array de parcelas
-            for (int i = 1; i <= request.NumeroParcelas; i++)
-            {
-                var parcela = new Parcela(
-                    id: 0,
-                    sequencial: i,
-                    valor: request.ValorTotal / request.NumeroParcelas,
-                    dataVencimento: request.DataPrimeiroVencimento.AddMonths(i - 1),
-                    contratoId: contrato.Id);
+            var parcelas = _parcelaService.GerarParcelas(request.ValorTotal, request.NumeroParcelas, request.DataPrimeiroVencimento, contrato.Id);
 
-                await _parcelaRepository.IncluirParcela(parcela);
-            }
+            if (parcelas.Any())
+                await _parcelaRepository.IncluirParcelas(parcelas);
 
             return contrato;
         }

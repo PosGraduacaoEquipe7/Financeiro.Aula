@@ -37,6 +37,11 @@ namespace Financeiro.Aula.Infra.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task IncluirParcelas(IEnumerable<Parcela> parcelas)
+        {
+            await _context.Parcelas.AddRangeAsync(parcelas);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task AlterarParcela(Parcela parcela)
         {

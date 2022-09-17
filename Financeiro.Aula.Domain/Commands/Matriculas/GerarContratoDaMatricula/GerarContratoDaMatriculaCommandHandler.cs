@@ -1,4 +1,5 @@
 using Financeiro.Aula.Domain.Entities;
+using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -10,17 +11,20 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
         private readonly IContratoRepository _contratoRepository;
         private readonly IParcelaRepository _parcelaRepository;
         private readonly ICursoRepository _cursoRepository;
+        private readonly IParcelaService _parcelaService;
 
         public GerarContratoDaMatriculaCommandHandler(
             IClienteRepository clienteRepository,
             IContratoRepository contratoRepository,
             IParcelaRepository parcelaRepository,
-            ICursoRepository cursoRepository)
+            ICursoRepository cursoRepository,
+            IParcelaService parcelaService)
         {
             _clienteRepository = clienteRepository;
             _contratoRepository = contratoRepository;
             _parcelaRepository = parcelaRepository;
             _cursoRepository = cursoRepository;
+            _parcelaService = parcelaService;
         }
 
         public async Task<Contrato?> Handle(GerarContratoDaMatriculaCommand request, CancellationToken cancellationToken)
@@ -62,18 +66,10 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 
             await _contratoRepository.IncluirContrato(contrato);
 
-            // TODO: criar um Service que gera um array de parcelas
-            for (int i = 1; i <= request.NumeroParcelas; i++)
-            {
-                var parcela = new Parcela(
-                    id: 0,
-                    sequencial: i,
-                    valor: curso.ValorBruto / request.NumeroParcelas,
-                    dataVencimento: DateTime.Now.Date.AddMonths(i),
-                    contratoId: contrato.Id);
+            var parcelas = _parcelaService.GerarParcelas(curso.ValorBruto, request.NumeroParcelas, DateTime.Now.Date, contrato.Id);
 
-                await _parcelaRepository.IncluirParcela(parcela);
-            }
+            if (parcelas.Any())
+                await _parcelaRepository.IncluirParcelas(parcelas);
 
             return contrato;
         }

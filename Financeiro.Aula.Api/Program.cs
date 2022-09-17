@@ -14,6 +14,7 @@ builder.Services.AddDbContext<FinanceiroDb>(options => options.UseSqlite("DataSo
 builder.Services
     .DeclareRepositorys()
     .DeclareServices()
+    .DeclareDomainServices()
     .DeclareApiServices(builder.Configuration);
 
 var domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Aula.Domain");
