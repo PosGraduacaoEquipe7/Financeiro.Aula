@@ -4,7 +4,7 @@ using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Moq;
 
-namespace Financeiro.Aula.Tests.Domain.Parcelas.GerarBoletoParcela
+namespace Financeiro.Aula.Tests.Domain.Commands.Parcelas.GerarBoletoParcela
 {
     public class GerarBoletoParcelaCommandTests
     {
