@@ -24,10 +24,10 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
 
             await _contratoRepository.IncluirContrato(contrato);
 
-            var parcelas = _parcelaService.GerarParcelas(request.ValorTotal, request.NumeroParcelas, request.DataPrimeiroVencimento, contrato.Id);
+            var retorno = _parcelaService.GerarParcelas(request.ValorTotal, request.NumeroParcelas, request.DataPrimeiroVencimento, contrato.Id);
 
-            if (parcelas.Any())
-                await _parcelaRepository.IncluirParcelas(parcelas);
+            if (retorno.Sucesso && retorno.Parcelas!.Any())
+                await _parcelaRepository.IncluirParcelas(retorno.Parcelas!);
 
             return contrato;
         }

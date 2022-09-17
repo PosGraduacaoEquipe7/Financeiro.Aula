@@ -66,10 +66,10 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 
             await _contratoRepository.IncluirContrato(contrato);
 
-            var parcelas = _parcelaService.GerarParcelas(curso.ValorBruto, request.NumeroParcelas, DateTime.Now.Date, contrato.Id);
+            var retorno = _parcelaService.GerarParcelas(curso.ValorBruto, request.NumeroParcelas, DateTime.Now.Date, contrato.Id);
 
-            if (parcelas.Any())
-                await _parcelaRepository.IncluirParcelas(parcelas);
+            if (retorno.Sucesso && retorno.Parcelas!.Any())
+                await _parcelaRepository.IncluirParcelas(retorno.Parcelas!);
 
             return contrato;
         }
