@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Infra", "Fi
 		{736099B9-72EA-40A3-9D7E-8A248820A69E} = {736099B9-72EA-40A3-9D7E-8A248820A69E}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Aula.Tests", "Financeiro.Aula.Tests\Financeiro.Aula.Tests.csproj", "{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{6ADFD15E-A5CC-49BF-A730-895F854C8716}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ADFD15E-A5CC-49BF-A730-895F854C8716}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ADFD15E-A5CC-49BF-A730-895F854C8716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
