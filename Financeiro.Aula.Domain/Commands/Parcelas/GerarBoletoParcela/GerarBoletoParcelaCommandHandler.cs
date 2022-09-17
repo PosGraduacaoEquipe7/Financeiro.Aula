@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
 {
-    public class GerarBoletoParcelaCommandHandler : IRequestHandler<GerarBoletoParcelaCommand, (bool Sucesso, string Mensagem, string Pdf)>
+    public class GerarBoletoParcelaCommandHandler : IRequestHandler<GerarBoletoParcelaCommand, (bool Sucesso, string Mensagem, byte[]? Pdf)>
     {
         private readonly IGeradorBoletoApiService _geradorBoletoApiService;
         private readonly IParcelaRepository _parcelaRepository;
@@ -15,30 +15,30 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             _parcelaRepository = parcelaRepository;
         }
 
-        public async Task<(bool Sucesso, string Mensagem, string Pdf)> Handle(GerarBoletoParcelaCommand request, CancellationToken cancellationToken)
+        public async Task<(bool Sucesso, string Mensagem, byte[]? Pdf)> Handle(GerarBoletoParcelaCommand request, CancellationToken cancellationToken)
         {
             var parcela = await _parcelaRepository.ObterParcela(request.ParcelaId);
 
             if (parcela is null)
-                return (false, "Parcela não localizada", string.Empty);
+                return (false, "Parcela não localizada", null);
 
             if (parcela.Paga)
-                return (false, "A parcela já está paga", string.Empty);
+                return (false, "A parcela já está paga", null);
 
             if (parcela.TemBoleto && !request.ConfirmaSobrescrever)
-                return (false, "A parcela já possui boleto gerado", string.Empty);
+                return (false, "A parcela já possui boleto gerado", null);
 
             var resultado = await _geradorBoletoApiService.GerarBoleto(parcela);
 
             if (!resultado.Sucesso)
-                return (false, $"Erro ao gerar o boleto: {resultado.MensagemErro}", string.Empty);
+                return (false, $"Erro ao gerar o boleto: {resultado.MensagemErro}", null);
 
             parcela.RegistrarBoleto(resultado.Numero, resultado.Token);
             await _parcelaRepository.AlterarParcela(parcela);
 
-            string pdf = Convert.ToBase64String(resultado.Pdf);
+            //string pdf = Convert.ToBase64String(resultado.Pdf);
 
-            return (true, string.Empty, pdf);
+            return (true, string.Empty, resultado.Pdf);
         }
     }
 }
