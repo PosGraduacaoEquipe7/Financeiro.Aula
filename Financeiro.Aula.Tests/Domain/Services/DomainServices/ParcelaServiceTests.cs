@@ -34,7 +34,7 @@ namespace Financeiro.Aula.Tests.Domain.Services.DomainServices
         {
             // Dado que o cálculo do parcelamento deve estar correto
 
-            // Quando o valor total for 1.000 em 10 parcelas
+            // Quando o valor total for de acordo com o recebido
             var resultado = _parcelaService.GerarParcelas(valorTotal, numeroParcelas, DateTime.Now.Date, 0);
 
             // Então
@@ -52,7 +52,7 @@ namespace Financeiro.Aula.Tests.Domain.Services.DomainServices
         {
             // Dado que o cálculo do parcelamento deve estar correto
 
-            // Quando o valor total for 1.000 em 10 parcelas
+            // Quando o valor total for de acordo com o recebido
             var resultado = _parcelaService.GerarParcelas(valorTotal, numeroParcelas, DateTime.Now.Date, 0);
 
             // Então
