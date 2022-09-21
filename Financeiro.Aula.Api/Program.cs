@@ -3,7 +3,9 @@ using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.ValueObjects;
 using Financeiro.Aula.Infra.Context;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -22,8 +24,66 @@ builder.Services.AddMediatR(domainAssembly);
 
 builder.Services.AddControllers();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(o =>
+{
+    o.Authority = "http://localhost:8080/realms/myrealm";
+    o.Audience = "account";
+    o.RequireHttpsMetadata = false;
+    
+    o.Events = new JwtBearerEvents()
+    {
+        OnAuthenticationFailed = c =>
+        {
+            c.NoResult();
+
+            c.Response.StatusCode = 500;
+            c.Response.ContentType = "text/plain";
+            //if (Environment.IsDevelopment())
+            //{
+            //return c.Response.WriteAsync(c.Exception.ToString());
+            Console.WriteLine(c.Exception.ToString());
+            return Task.FromResult("oi");
+            //}
+            //return c.Response.WriteAsync("An error occured processing your authentication.");
+        }
+    };
+});
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -32,11 +92,11 @@ builder.Services.AddCors(options =>
                       {
                           policy.WithOrigins(
                                     "http://localhost:4200"//,
-                                    //"http://localhost:5000"
+                                                           //"http://localhost:5000"
                                 )
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
-                                //.AllowCredentials();
+                          //.AllowCredentials();
                           //policy.SetIsOriginAllowed(origin => true);
                           //policy.AllowAnyMethod();
                           //policy.AllowAnyHeader();
@@ -56,6 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(MyAllowSpecificOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -3,6 +3,7 @@ using Financeiro.Aula.Domain.Commands.Parcelas.ListarParcelas;
 using Financeiro.Aula.Domain.Commands.Parcelas.ObterPdfBoletoParcela;
 using Financeiro.Aula.Domain.Commands.Parcelas.PagarParcela;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
@@ -18,9 +19,14 @@ namespace Financeiro.Aula.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet("/api/Contratos/{contratoId}/parcelas")]
         public async Task<IActionResult> ListarParcelas([FromRoute] long contratoId)
         {
+            var temp = User?.Identity?.IsAuthenticated;
+            var temp2 = User?.Identity?.Name;
+            var temp3 = $"{temp} - {temp2}";
+
             var parcelas = await _mediator.Send(new ListarParcelasCommand(contratoId));
 
             return Ok(parcelas);
