@@ -23,10 +23,6 @@ namespace Financeiro.Aula.Api.Controllers
         [HttpGet("/api/Contratos/{contratoId}/parcelas")]
         public async Task<IActionResult> ListarParcelas([FromRoute] long contratoId)
         {
-            var temp = User?.Identity?.IsAuthenticated;
-            var temp2 = User?.Identity?.Name;
-            var temp3 = $"{temp} - {temp2}";
-
             var parcelas = await _mediator.Send(new ListarParcelasCommand(contratoId));
 
             return Ok(parcelas);

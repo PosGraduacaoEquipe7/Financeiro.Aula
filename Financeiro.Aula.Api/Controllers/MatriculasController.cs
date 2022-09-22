@@ -1,12 +1,14 @@
 using Financeiro.Aula.Api.Models.Contratos.Mappers;
 using Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MatriculasController : ControllerBase
     {
         private readonly IMediator _mediator;

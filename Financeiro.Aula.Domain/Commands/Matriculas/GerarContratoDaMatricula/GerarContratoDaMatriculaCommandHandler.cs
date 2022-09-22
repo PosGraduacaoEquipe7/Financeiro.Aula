@@ -1,26 +1,31 @@
+using Financeiro.Aula.Domain.DTOs;
 using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
+using Financeiro.Aula.Domain.Interfaces.Services;
 using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 {
     public class GerarContratoDaMatriculaCommandHandler : IRequestHandler<GerarContratoDaMatriculaCommand, Contrato?>
     {
-        private readonly IClienteRepository _clienteRepository;
+        private readonly IAuthService _authService;
+        private readonly IClienteService _clienteService;
         private readonly IContratoRepository _contratoRepository;
         private readonly IParcelaRepository _parcelaRepository;
         private readonly ICursoRepository _cursoRepository;
         private readonly IParcelaService _parcelaService;
 
         public GerarContratoDaMatriculaCommandHandler(
-            IClienteRepository clienteRepository,
+            IAuthService authService,
+            IClienteService clienteService,
             IContratoRepository contratoRepository,
             IParcelaRepository parcelaRepository,
             ICursoRepository cursoRepository,
             IParcelaService parcelaService)
         {
-            _clienteRepository = clienteRepository;
+            _authService = authService;
+            _clienteService = clienteService;
             _contratoRepository = contratoRepository;
             _parcelaRepository = parcelaRepository;
             _cursoRepository = cursoRepository;
@@ -29,30 +34,26 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 
         public async Task<Contrato?> Handle(GerarContratoDaMatriculaCommand request, CancellationToken cancellationToken)
         {
-            if (await _clienteRepository.VerificarCpfExiste(request.Cpf))
-            {
-                // TODO: cpf já existente                
-                return default;
-            }
+            if (!_authService.UsuarioLogado)
+                return null;
 
-            // TODO: salvar o e-mail e senha
+            var clienteDto = new ClienteAtualizacaoDto(
+                UsuarioId: _authService.UsuarioId,
+                Nome: request.Nome,
+                Email: request.Email,
+                Cpf: request.Cpf,
+                Identidade: request.Identidade,
+                DataNascimento: request.DataNascimento,
+                Telefone: request.Telefone,
+                Endereco: request.Endereco
+            );
 
-            var cliente = new Cliente(
-                id: 0,
-                nome: request.Nome,
-                cpf: request.Cpf,
-                identidade: request.Identidade,
-                dataNascimento: request.DataNascimento,
-                telefone: request.Telefone,
-                endereco: request.Endereco);
-
-            await _clienteRepository.IncluirCliente(cliente);
+            var cliente = await _clienteService.IncluirOuAlterarCliente(clienteDto);
 
             var curso = await _cursoRepository.ObterCursoPadrao();
 
             if (curso is null)
             {
-                // TODO: curso inválido
                 return default;
             }
 

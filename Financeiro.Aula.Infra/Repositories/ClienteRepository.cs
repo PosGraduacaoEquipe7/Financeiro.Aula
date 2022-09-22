@@ -19,15 +19,15 @@ namespace Financeiro.Aula.Infra.Repositories
             return await _context.Clientes.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> VerificarCpfExiste(string cpf)
+        public async Task<Cliente?> ObterClientePeloUsuarioId(string usuarioId)
         {
-            return await _context.Clientes.AnyAsync(c => c.Cpf == cpf);
+            return await _context.Clientes.Where(c => c.UsuarioId == usuarioId).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Cliente>> ListarClientes(string? nome)
         {
             return await _context.Clientes
-                            .Where(c => 
+                            .Where(c =>
                                 string.IsNullOrEmpty(nome) || c.Nome.Contains(nome))
                             .OrderBy(c => c.Nome)
                             .ToListAsync();
