@@ -6,7 +6,11 @@ namespace Financeiro.Aula.Domain.Entities
     {
         public long Id { get; private set; }
 
+        public string UsuarioId { get; private set; }
+
         public string Nome { get; private set; }
+
+        public string Email { get; private set; }
 
         public string Cpf { get; private set; }
 
@@ -20,14 +24,15 @@ namespace Financeiro.Aula.Domain.Entities
 
         public virtual ICollection<Contrato> Contratos { get; private set; }
 
-        private Cliente() : this(default, string.Empty, string.Empty, string.Empty, DateTime.Now, string.Empty, null!)
+        private Cliente() : this(default, Guid.NewGuid().ToString(), string.Empty, string.Empty, string.Empty, string.Empty, DateTime.Now, string.Empty, null!)
         {
         }
 
-        public Cliente(long id, string nome, string cpf, string identidade, DateTime dataNascimento, string telefone, Endereco endereco)
+        public Cliente(string usuarioId, string nome, string email, string cpf, string identidade, DateTime dataNascimento, string telefone, Endereco endereco)
         {
-            Id = id;
+            UsuarioId = usuarioId;
             Nome = nome;
+            Email = email;
             Cpf = cpf;
             Identidade = identidade;
             DataNascimento = dataNascimento;
@@ -37,10 +42,20 @@ namespace Financeiro.Aula.Domain.Entities
             Contratos = new HashSet<Contrato>();
         }
 
-        public void AtualizarCadastro(string nome, string cpf, Endereco endereco)
+        public Cliente(long id, string usuarioId, string nome, string email, string cpf, string identidade, DateTime dataNascimento, string telefone, Endereco endereco)
+            : this(usuarioId, nome, email, cpf, identidade, dataNascimento, telefone, endereco)
+        {
+            Id = id;
+        }
+
+        public void AtualizarCadastro(string nome, string email, string cpf, string identidade, DateTime dataNascimento, string telefone, Endereco endereco)
         {
             Nome = nome;
+            Email = email;
             Cpf = cpf;
+            Identidade = identidade;
+            DataNascimento = dataNascimento;
+            Telefone = telefone;
             Endereco = endereco;
         }
     }

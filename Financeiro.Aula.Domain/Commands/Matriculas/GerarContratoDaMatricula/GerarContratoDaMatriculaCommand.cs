@@ -10,8 +10,6 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 
         public string Email { get; set; }
 
-        public string Senha { get; set; }
-
         public string Cpf { get; set; }
 
         public string Identidade { get; set; }

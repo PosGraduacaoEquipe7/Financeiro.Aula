@@ -20,7 +20,14 @@ namespace Financeiro.Aula.Domain.Commands.Clientes.AlterarCliente
             if (cliente is null)
                 return default;
 
-            cliente.AtualizarCadastro(request.Nome, request.Cpf, request.Endereco);
+            cliente.AtualizarCadastro(
+                request.Nome,
+                request.Email,
+                request.Cpf,
+                request.Identidade,
+                request.DataNascimento,
+                request.Telefone,
+                request.Endereco);
 
             await _clienteRepository.AtualizarCliente(cliente);
 

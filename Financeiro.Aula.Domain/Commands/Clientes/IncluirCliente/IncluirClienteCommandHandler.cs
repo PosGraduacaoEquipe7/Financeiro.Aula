@@ -17,7 +17,9 @@ namespace Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente
         {
             var cliente = new Cliente(
                 id: 0,
+                usuarioId: Guid.NewGuid().ToString(), // TODO: esse fluxo não deveria nem existir...
                 nome: request.Nome,
+                email: request.Email,
                 cpf: request.Cpf,
                 identidade: request.Identidade,
                 dataNascimento: request.DataNascimento,
