@@ -1,4 +1,5 @@
-﻿using Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela;
+﻿using Financeiro.Aula.Api.Models.Parcelas.Mappers;
+using Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela;
 using Financeiro.Aula.Domain.Commands.Parcelas.ListarParcelas;
 using Financeiro.Aula.Domain.Commands.Parcelas.ObterPdfBoletoParcela;
 using Financeiro.Aula.Domain.Commands.Parcelas.PagarParcela;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ParcelasController : ControllerBase
@@ -19,13 +21,14 @@ namespace Financeiro.Aula.Api.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
         [HttpGet("/api/Contratos/{contratoId}/parcelas")]
         public async Task<IActionResult> ListarParcelas([FromRoute] long contratoId)
         {
             var parcelas = await _mediator.Send(new ListarParcelasCommand(contratoId));
 
-            return Ok(parcelas);
+            var parcelasLista = ListarParcelaResponseMapper.Map(parcelas);
+
+            return Ok(parcelasLista);
         }
 
         [HttpPut("{id}/pagar")]

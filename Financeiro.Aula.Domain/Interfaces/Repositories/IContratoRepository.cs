@@ -6,7 +6,7 @@ namespace Financeiro.Aula.Domain.Interfaces.Repositories
     {
         Task<Contrato?> ObterContrato(long id);
         Task<Contrato?> ObterContratoComParcelasECliente(long id);
-        Task<IEnumerable<Contrato>> ListarContratos(long? clienteId);
+        Task<IEnumerable<Contrato>> ListarContratosPeloUsuario(string usuarioId);
         Task IncluirContrato(Contrato contrato);
         Task AlterarContrato(Contrato contrato);
     }

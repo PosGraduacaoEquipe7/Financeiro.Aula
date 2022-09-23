@@ -4,10 +4,12 @@ using Financeiro.Aula.Domain.Commands.Contratos.ImprimirContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato;
 using Financeiro.Aula.Domain.Commands.Contratos.ListarContratos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ContratosController : ControllerBase
@@ -20,11 +22,13 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarContratos([FromQuery] long? clienteId)
+        public async Task<IActionResult> ListarContratos()
         {
-            var contratos = await _mediator.Send(new ListarContratosCommand(clienteId));
+            var contratos = await _mediator.Send(new ListarContratosCommand());
 
-            return Ok(contratos);
+            var contratosLista = ListarContratoResponseMapper.Map(contratos);
+
+            return Ok(contratosLista);
         }
 
         [HttpPost]

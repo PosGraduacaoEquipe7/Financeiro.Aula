@@ -16,7 +16,10 @@ namespace Financeiro.Aula.Infra.Repositories
 
         public async Task<Contrato?> ObterContrato(long id)
         {
-            return await _context.Contratos.Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _context.Contratos
+                            .Include(c => c.Cliente)
+                            .Where(c => c.Id == id)
+                            .FirstOrDefaultAsync();
         }
 
         public async Task<Contrato?> ObterContratoComParcelasECliente(long id)
@@ -29,10 +32,11 @@ namespace Financeiro.Aula.Infra.Repositories
                             .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Contrato>> ListarContratos(long? clienteId)
+        public async Task<IEnumerable<Contrato>> ListarContratosPeloUsuario(string usuarioId)
         {
             return await _context.Contratos
-                            .Where(c => clienteId == null || c.ClienteId == clienteId.Value)
+                            .Include(c => c.Cliente)
+                            .Where(c => c.Cliente!.UsuarioId == usuarioId)
                             .OrderBy(c => c.DataEmissao)
                             .ToListAsync();
         }
