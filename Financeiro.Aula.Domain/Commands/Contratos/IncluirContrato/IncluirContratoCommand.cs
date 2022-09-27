@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Contratos.IncluirContrato
 {
-    public class IncluirContratoCommand : IRequest<Contrato>
+    public class IncluirContratoCommand : IRequest<Contrato?>
     {
         public DateTime DataEmissao { get; set; }
 

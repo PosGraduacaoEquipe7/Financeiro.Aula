@@ -27,7 +27,9 @@ namespace Financeiro.Aula.Infra.Repositories
             return await _context.Contratos
                             .Include(c => c.Parcelas)
                             .Include(c => c.Cliente)
-                            .ThenInclude(cl => cl.Endereco)
+                                .ThenInclude(cl => cl.Endereco)
+                            .Include(c => c.Turma)
+                                .ThenInclude(cl => cl.Curso)
                             .Where(c => c.Id == id)
                             .FirstOrDefaultAsync();
         }
@@ -36,6 +38,8 @@ namespace Financeiro.Aula.Infra.Repositories
         {
             return await _context.Contratos
                             .Include(c => c.Cliente)
+                            .Include(c => c.Turma)
+                            .ThenInclude(c => c.Curso)
                             .Where(c => c.Cliente!.UsuarioId == usuarioId)
                             .OrderBy(c => c.DataEmissao)
                             .ToListAsync();

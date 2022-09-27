@@ -14,7 +14,8 @@
 
         public virtual Cliente? Cliente { get; private set; }
 
-        public virtual Turma Turma { get; private set; } = null!;
+        public long TurmaId { get; private set; }
+        public virtual Turma Turma { get; private set; } = default!;
 
         public DateTime? DataHoraAceiteContrato { get; private set; }
 
@@ -22,16 +23,17 @@
 
         public virtual ICollection<Parcela> Parcelas { get; private set; }
 
-        private Contrato() : this(default, default, default, default)
+        private Contrato() : this(default, default, default, default, default!)
         {
         }
 
-        public Contrato(long id, DateTime dataEmissao, double valorTotal, long clienteId)
+        public Contrato(long id, DateTime dataEmissao, double valorTotal, long clienteId, long turmaId)
         {
             Id = id;
             DataEmissao = dataEmissao;
             ValorTotal = valorTotal;
             ClienteId = clienteId;
+            TurmaId = turmaId;
 
             Cancelado = false;
 

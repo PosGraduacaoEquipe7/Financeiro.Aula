@@ -4,6 +4,6 @@ namespace Financeiro.Aula.Domain.Interfaces.Repositories
 {
     public interface ITurmaRepository
     {
-        Task<Turma?> ObterTurmaPadrao();
+        Task<Turma?> ObterTurmaDoCurso(long cursoId);
     }
 }

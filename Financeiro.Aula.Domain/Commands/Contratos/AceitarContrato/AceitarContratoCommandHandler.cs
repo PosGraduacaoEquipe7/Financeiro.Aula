@@ -1,14 +1,17 @@
 using Financeiro.Aula.Domain.Interfaces.Repositories;
+using Financeiro.Aula.Domain.Interfaces.Services;
 using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Contratos.AceitarContrato
 {
     public class AceitarContratoCommandHandler : IRequestHandler<AceitarContratoCommand, (bool Sucesso, string Mensagem)>
     {
+        private readonly IAuthService _authService;
         private readonly IContratoRepository _contratoRepository;
 
-        public AceitarContratoCommandHandler(IContratoRepository contratoRepository)
+        public AceitarContratoCommandHandler(IAuthService authService, IContratoRepository contratoRepository)
         {
+            _authService = authService;
             _contratoRepository = contratoRepository;
         }
 
@@ -19,7 +22,8 @@ namespace Financeiro.Aula.Domain.Commands.Contratos.AceitarContrato
             if (contrato is null)
                 return (false, "Contrato não encontrado");
 
-            // TODO: validar se o contrato pertence ao usuário logado
+            if (contrato.Cliente?.UsuarioId != _authService.UsuarioId)
+                return (false, "O contrato é inválido");
 
             if (contrato.Cancelado)
                 return (false, "O contrato está cancelado");

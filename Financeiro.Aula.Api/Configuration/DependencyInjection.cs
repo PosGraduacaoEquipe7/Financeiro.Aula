@@ -19,11 +19,11 @@ namespace Financeiro.Aula.Api.Configuration
         {
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IContratoRepository, ContratoRepository>();
-            services.AddScoped<ICursoRepository, CursoMockRepository>();
+            services.AddScoped<ICursoRepository, CursoRepository>();
             services.AddScoped<IEmpresaRepository, EmpresaMockRepository>();
             services.AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>();
             services.AddScoped<IParcelaRepository, ParcelaRepository>();
-            services.AddScoped<ITurmaRepository, TurmaMockRepository>();
+            services.AddScoped<ITurmaRepository, TurmaRepository>();
 
             return services;
         }

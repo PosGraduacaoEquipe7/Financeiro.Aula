@@ -13,7 +13,7 @@ namespace Financeiro.Aula.Api.Models.Contratos.Mappers
             return new ListarContratoResponse()
             {
                 Id = contrato.Id,
-                Curso = "Teste"
+                Curso = contrato.Turma.Descricao,
             };
         }
     }

@@ -2,6 +2,8 @@ namespace Financeiro.Aula.Domain.Entities
 {
     public class Curso
     {
+        public const long CURSO_PADRAO_ID = 1;
+
         public long Id { get; private set; }
 
         public string Descricao { get; private set; }

@@ -35,7 +35,7 @@ builder.Services.AddAuthentication(options =>
     o.Authority = "http://localhost:8080/realms/myrealm";
     o.Audience = "account";
     o.RequireHttpsMetadata = false;
-    
+
     o.Events = new JwtBearerEvents()
     {
         OnAuthenticationFailed = c =>
@@ -48,7 +48,7 @@ builder.Services.AddAuthentication(options =>
             //{
             //return c.Response.WriteAsync(c.Exception.ToString());
             Console.WriteLine(c.Exception.ToString());
-            return Task.FromResult("oi");
+            return Task.FromResult(string.Empty);
             //}
             //return c.Response.WriteAsync("An error occured processing your authentication.");
         }
@@ -148,6 +148,29 @@ using (var scope = app.Services.CreateScope())
                                municipio: "Porto Alegre",
                                uf: "RS")
                            ));
+
+        db.SaveChanges();
+    }
+
+    if (!db.Cursos.Any())
+    {
+        var curso = new Curso(
+            id: 1,
+            descricao: "Nutrição",
+            cargaHoraria: 100,
+            valorBruto: 5000
+        );
+        db.Cursos.Add(curso);
+
+        var turma = new Turma(
+            id: 1,
+            numero: "1",
+            horario: "SEG-QUA-SEX, 19h30-22h30",
+            cursoId: curso.Id,
+            dataInicio: new DateTime(2023, 3, 6),
+            dataTermino: new DateTime(2023, 6, 30)
+        );
+        db.Turmas.Add(turma);
 
         db.SaveChanges();
     }

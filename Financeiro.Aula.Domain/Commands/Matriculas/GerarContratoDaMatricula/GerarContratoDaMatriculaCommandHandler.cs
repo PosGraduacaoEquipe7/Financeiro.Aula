@@ -15,6 +15,7 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
         private readonly IParcelaRepository _parcelaRepository;
         private readonly ICursoRepository _cursoRepository;
         private readonly IParcelaService _parcelaService;
+        private readonly ITurmaRepository _turmaRepository;
 
         public GerarContratoDaMatriculaCommandHandler(
             IAuthService authService,
@@ -22,7 +23,8 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
             IContratoRepository contratoRepository,
             IParcelaRepository parcelaRepository,
             ICursoRepository cursoRepository,
-            IParcelaService parcelaService)
+            IParcelaService parcelaService,
+            ITurmaRepository turmaRepository)
         {
             _authService = authService;
             _clienteService = clienteService;
@@ -30,6 +32,7 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
             _parcelaRepository = parcelaRepository;
             _cursoRepository = cursoRepository;
             _parcelaService = parcelaService;
+            _turmaRepository = turmaRepository;
         }
 
         public async Task<Contrato?> Handle(GerarContratoDaMatriculaCommand request, CancellationToken cancellationToken)
@@ -51,19 +54,19 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
             var cliente = await _clienteService.IncluirOuAlterarCliente(clienteDto);
 
             var curso = await _cursoRepository.ObterCursoPadrao();
-
             if (curso is null)
-            {
                 return default;
-            }
 
-            // TODO: setar a turma para o contrato
+            var turma = await _turmaRepository.ObterTurmaDoCurso(curso.Id);
+            if (turma is null)
+                return default;
 
             var contrato = new Contrato(
                 id: 0,
                 dataEmissao: DateTime.Now,
                 valorTotal: curso.ValorBruto,
-                clienteId: cliente.Id);
+                clienteId: cliente.Id,
+                turmaId: turma.Id);
 
             await _contratoRepository.IncluirContrato(contrato);
 
