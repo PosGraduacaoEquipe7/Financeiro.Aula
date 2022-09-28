@@ -70,7 +70,7 @@ namespace Financeiro.Aula.Domain.Commands.Matriculas.GerarContratoDaMatricula
 
             await _contratoRepository.IncluirContrato(contrato);
 
-            var retorno = _parcelaService.GerarParcelas(curso.ValorBruto, request.NumeroParcelas, DateTime.Now.Date, contrato.Id);
+            var retorno = _parcelaService.GerarParcelas(curso.ValorBruto, request.NumeroParcelas, DateTime.Now.Date.AddMonths(1), contrato.Id);
 
             if (retorno.Sucesso && retorno.Parcelas!.Any())
                 await _parcelaRepository.IncluirParcelas(retorno.Parcelas!);

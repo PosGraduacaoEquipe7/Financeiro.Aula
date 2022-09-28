@@ -19,7 +19,7 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IncluirContrato([FromBody] GerarContratoDaMatriculaCommand request)
+        public async Task<IActionResult> GerarMatricula([FromBody] GerarContratoDaMatriculaCommand request)
         {
             var contrato = await _mediator.Send(request);
 

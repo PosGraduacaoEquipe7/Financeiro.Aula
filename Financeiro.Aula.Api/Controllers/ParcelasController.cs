@@ -50,8 +50,8 @@ namespace Financeiro.Aula.Api.Controllers
             if (!retorno.Sucesso)
                 return BadRequest(retorno.Mensagem);
 
-            //return Ok(retorno.Pdf);
-            return File(retorno.Pdf, "application/pdf");
+            return Ok(retorno.Pdf);
+            //return File(retorno.Pdf, "application/pdf");
         }
 
         [HttpGet("{id}/obter-boleto")]
@@ -62,8 +62,8 @@ namespace Financeiro.Aula.Api.Controllers
             if (!retorno.Sucesso)
                 return BadRequest(retorno.Mensagem);
 
-            //return Ok(retorno.Pdf);
-            return File(retorno.Pdf, "application/pdf");
+            return Ok(retorno.Pdf);
+            //return File(retorno.Pdf, "application/pdf");
         }
     }
 }
