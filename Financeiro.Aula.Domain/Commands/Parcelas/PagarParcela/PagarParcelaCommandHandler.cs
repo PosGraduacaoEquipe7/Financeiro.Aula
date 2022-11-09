@@ -26,7 +26,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.PagarParcela
 
             await _parcelaRepository.AlterarParcela(parcela);
 
-            return (true, String.Empty);
+            return (true, string.Empty);
         }
     }
 }

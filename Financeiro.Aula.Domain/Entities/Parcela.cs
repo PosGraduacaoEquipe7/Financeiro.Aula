@@ -16,13 +16,11 @@
 
         public virtual Contrato? Contrato { get; private set; }
 
-        public string? NumeroBoleto { get; private set; }
-
         public string? ChaveBoleto { get; private set; }
 
         public bool Paga => DataPagamento is not null;
 
-        public bool TemBoleto => !string.IsNullOrEmpty(NumeroBoleto);
+        public bool TemBoleto => !string.IsNullOrEmpty(ChaveBoleto);
 
         private Parcela()
         {
@@ -42,9 +40,8 @@
             DataPagamento = DateTime.Now.Date;
         }
 
-        public void RegistrarBoleto(string numeroBoleto, string chaveBoleto)
+        public void RegistrarBoleto(string chaveBoleto)
         {
-            NumeroBoleto = numeroBoleto;
             ChaveBoleto = chaveBoleto;
         }
     }

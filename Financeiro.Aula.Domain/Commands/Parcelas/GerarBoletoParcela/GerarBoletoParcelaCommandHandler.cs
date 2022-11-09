@@ -1,44 +1,37 @@
-﻿using Financeiro.Aula.Domain.Interfaces.ApiServices;
+﻿using Financeiro.Aula.Domain.DTOs;
+using Financeiro.Aula.Domain.Interfaces.Queues;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
 {
-    public class GerarBoletoParcelaCommandHandler : IRequestHandler<GerarBoletoParcelaCommand, (bool Sucesso, string Mensagem, string Pdf)>
+    public class GerarBoletoParcelaCommandHandler : IRequestHandler<GerarBoletoParcelaCommand, (bool Sucesso, string Mensagem)>
     {
-        private readonly IGeradorBoletoApiService _geradorBoletoApiService;
         private readonly IParcelaRepository _parcelaRepository;
+        private readonly IBoletoQueue _boletoQueue;
 
-        public GerarBoletoParcelaCommandHandler(IGeradorBoletoApiService geradorBoletoApiService, IParcelaRepository parcelaRepository)
+        public GerarBoletoParcelaCommandHandler(IParcelaRepository parcelaRepository, IBoletoQueue boletoQueue)
         {
-            _geradorBoletoApiService = geradorBoletoApiService;
             _parcelaRepository = parcelaRepository;
+            _boletoQueue = boletoQueue;
         }
 
-        public async Task<(bool Sucesso, string Mensagem, string Pdf)> Handle(GerarBoletoParcelaCommand request, CancellationToken cancellationToken)
+        public async Task<(bool Sucesso, string Mensagem)> Handle(GerarBoletoParcelaCommand request, CancellationToken cancellationToken)
         {
             var parcela = await _parcelaRepository.ObterParcela(request.ParcelaId);
 
             if (parcela is null)
-                return (false, "Parcela não localizada", string.Empty);
+                return (false, "Parcela não localizada");
 
             if (parcela.Paga)
-                return (false, "A parcela já está paga", string.Empty);
+                return (false, "A parcela já está paga");
 
             if (parcela.TemBoleto && !request.ConfirmaSobrescrever)
-                return (false, "A parcela já possui boleto gerado", string.Empty);
+                return (false, "A parcela já possui boleto gerado");
 
-            var resultado = await _geradorBoletoApiService.GerarBoleto(parcela);
+            await _boletoQueue.EnviarParcelaFilaGerarBoleto(new ParcelaGerarBoletoDto(parcela));
 
-            if (!resultado.Sucesso)
-                return (false, $"Erro ao gerar o boleto: {resultado.MensagemErro}", string.Empty);
-
-            parcela.RegistrarBoleto(resultado.Numero, resultado.Token);
-            await _parcelaRepository.AlterarParcela(parcela);
-
-            string pdf = Convert.ToBase64String(resultado.Pdf);
-
-            return (true, string.Empty, pdf);
+            return (true, string.Empty);
         }
     }
 }

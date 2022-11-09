@@ -50,7 +50,7 @@ namespace Financeiro.Aula.Api.Controllers
             if (!retorno.Sucesso)
                 return BadRequest(retorno.Mensagem);
 
-            return Ok(retorno.Pdf);
+            return Ok();
             //return File(retorno.Pdf, "application/pdf");
         }
 
