@@ -16,6 +16,20 @@ namespace Financeiro.Boleto.Domain.Services
             _boletoRepository = boletoRepository;
         }
 
+        public async Task<string?> ObterPdfBoleto(Guid id)
+        {
+            var boleto = await _boletoRepository.ObterBoleto(id);
+            if (boleto is null)
+                return null;
+
+            var pdf = await _geradorBoletoApiService.ObterPdfBoleto(boleto.ChaveBoleto);
+
+            if (pdf is null)
+                return null;
+
+            return Convert.ToBase64String(pdf);
+        }
+
         public async Task RegistrarBoleto(BoletoGerarDto boletoDto)
         {
             var boleto = await _geradorBoletoApiService.GerarBoleto(boletoDto);

@@ -1,5 +1,6 @@
 ﻿using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Infra.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Financeiro.Boleto.Infra.Repositories
 {
@@ -14,7 +15,7 @@ namespace Financeiro.Boleto.Infra.Repositories
 
         public Task<Domain.Entities.Boleto?> ObterBoleto(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Boletos.FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task IncluirBoleto(Domain.Entities.Boleto boleto)

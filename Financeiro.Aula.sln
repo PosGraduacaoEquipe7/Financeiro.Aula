@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Infra", "Financeiro.Boleto.Infra\Financeiro.Boleto.Infra.csproj", "{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Boleto.Api", "Financeiro.Boleto.Api\Financeiro.Boleto.Api.csproj", "{FEB8B817-C2F6-4F3F-A170-692F118E7645}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
 		{795C4325-F991-4781-980C-63A4B4DA17ED} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
 		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {912AB400-8A57-452C-8F94-5CE377462C13}

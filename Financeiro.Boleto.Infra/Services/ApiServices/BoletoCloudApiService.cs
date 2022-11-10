@@ -22,21 +22,20 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
             _parametroBoleto = parametroBoletoRepository.ObterParametrosBoleto().Result;
         }
 
-        //public async Task<byte[]?> ObterPdfBoleto(Guid id)
-        //{
-        //    var boleto = await _boletoRepository.ObterBoleto(id);
-        //    if (boleto is null)
-        //        return null;
+        public async Task<byte[]?> ObterPdfBoleto(string chaveBoleto)
+        {
+            var response = await _client.GetAsync($"boletos/{chaveBoleto}");
 
-        //    var response = await _client.GetAsync($"boletos/{boleto.ChaveBoleto}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var erro = await response.Content.ReadAsStringAsync();
+                _logger.LogError("Requisição de obtenção de boleto mal sucedida. {StatusCode} - {Erro}", response.StatusCode, erro);
 
-        //    if (!response.IsSuccessStatusCode)
-        //    {
-        //        return null;
-        //    }
+                return null;
+            }
 
-        //    return await response.Content.ReadAsByteArrayAsync();
-        //}
+            return await response.Content.ReadAsByteArrayAsync();
+        }
 
         public async Task<Domain.Entities.Boleto?> GerarBoleto(BoletoGerarDto boleto)
         {
@@ -60,7 +59,7 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
                 if (!response.IsSuccessStatusCode)
                 {
                     var erro = await response.Content.ReadAsStringAsync();
-                    _logger.LogError("Requisição de boleto mal sucedida. {StatusCode} - {Erro}", response.StatusCode, erro);
+                    _logger.LogError("Requisição de registro de boleto mal sucedida. {StatusCode} - {Erro}", response.StatusCode, erro);
 
                     return null;
                 }

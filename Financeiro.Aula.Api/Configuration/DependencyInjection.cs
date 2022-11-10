@@ -1,4 +1,5 @@
 using Financeiro.Aula.Api.Services;
+using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Queues;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
@@ -8,6 +9,10 @@ using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Domain.Services.Queues;
 using Financeiro.Aula.Infra.Repositories;
+using Financeiro.Aula.Infra.Services.ApiServices;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Financeiro.Aula.Api.Configuration
 {
@@ -56,6 +61,12 @@ namespace Financeiro.Aula.Api.Configuration
             services.AddHttpContextAccessor();
 
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddHttpClient<IBoletoApiService, BoletoApiService>(client =>
+            {
+                client.BaseAddress = new Uri(configuration["ApiBoleto:BaseAddress"]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Header[""]);
+            });
 
             return services;
         }
