@@ -5,12 +5,12 @@ namespace Financeiro.Boleto.Queue.GerarBoleto
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScope _serviceScope;
 
         public Worker(ILogger<Worker> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
-            _serviceProvider = serviceProvider;
+            _serviceScope = serviceProvider.CreateScope();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -24,12 +24,9 @@ namespace Financeiro.Boleto.Queue.GerarBoleto
         {
             _logger.LogInformation($"{nameof(Worker)} is working.");
 
-            using (IServiceScope scope = _serviceProvider.CreateScope())
-            {
-                IScopedProcessingService scopedProcessingService = scope.ServiceProvider.GetRequiredService<IScopedProcessingService>();
+            var scopedProcessingService = _serviceScope.ServiceProvider.GetRequiredService<IScopedProcessingService>();
 
-                await scopedProcessingService.DoWorkAsync(stoppingToken);
-            }
+            await scopedProcessingService.DoWorkAsync(stoppingToken);
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
@@ -37,6 +34,12 @@ namespace Financeiro.Boleto.Queue.GerarBoleto
             _logger.LogInformation($"{nameof(Worker)} is stopping.");
 
             await base.StopAsync(stoppingToken);
+        }
+
+        public override void Dispose()
+        {
+            _serviceScope.Dispose();
+            base.Dispose();
         }
     }
 }

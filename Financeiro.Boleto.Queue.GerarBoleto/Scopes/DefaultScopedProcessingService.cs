@@ -75,12 +75,6 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
             {
                 _channel.BasicConsume(_configuration.Queue, false, consumer);
             });
-
-            // TODO: gambiarra BRABA pro contexto de quem chamou não dar dispose
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(3, stoppingToken);
-            }
         }
     }
 }
