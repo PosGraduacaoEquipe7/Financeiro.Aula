@@ -1,4 +1,4 @@
-﻿namespace Financeiro.Boleto.Queue.GerarBoleto.Config
+﻿namespace Financeiro.Aula.Queue.BoletoRegistrado.Config
 {
     public class RabbitMqConfiguration
     {

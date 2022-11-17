@@ -11,26 +11,22 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
 {
     public class DefaultScopedProcessingService : IScopedProcessingService
     {
-        private int _executionCount;
         private readonly ILogger<DefaultScopedProcessingService> _logger;
         private readonly IBoletoService _boletoService;
 
         private readonly RabbitMqConfiguration _configuration;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly IServiceProvider _serviceProvider;
 
         public DefaultScopedProcessingService(
             ILogger<DefaultScopedProcessingService> logger,
             IBoletoService boletoService,
-            IOptions<RabbitMqConfiguration> option,
-            IServiceProvider serviceProvider)
+            IOptions<RabbitMqConfiguration> option)
         {
             _logger = logger;
             _boletoService = boletoService;
 
             _configuration = option.Value;
-            _serviceProvider = serviceProvider;
 
             var factory = new ConnectionFactory
             {
@@ -40,7 +36,7 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(
-                        queue: _configuration.Queue,
+                        queue: _configuration.QueueRegistrarBoleto,
                         durable: true,
                         exclusive: false,
                         autoDelete: false,
@@ -51,30 +47,37 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
         {
             var consumer = new EventingBasicConsumer(_channel);
 
-            consumer.Received += async (sender, eventArgs) =>
-            {
-                var contentArray = eventArgs.Body.ToArray();
-                var contentString = Encoding.UTF8.GetString(contentArray);
-
-                _logger.LogInformation(contentString);
-
-                var boletoDto = JsonConvert.DeserializeObject<BoletoGerarDto>(contentString);
-
-                if (boletoDto is null)
-                {
-                    _logger.LogError("Valor nulo");
-                    return;
-                }
-
-                await _boletoService.RegistrarBoleto(boletoDto);
-
-                _channel.BasicAck(eventArgs.DeliveryTag, false);
-            };
+            consumer.Received += Consumer_Received;
 
             await Task.Run(() =>
             {
-                _channel.BasicConsume(_configuration.Queue, false, consumer);
+                _channel.BasicConsume(_configuration.QueueRegistrarBoleto, false, consumer);
             });
+        }
+
+        private async void Consumer_Received(object? sender, BasicDeliverEventArgs eventArgs)
+        {
+            var contentArray = eventArgs.Body.ToArray();
+            var contentString = Encoding.UTF8.GetString(contentArray);
+
+            _logger.LogInformation(contentString);
+
+            var boletoDto = JsonConvert.DeserializeObject<BoletoGerarDto>(contentString);
+
+            if (boletoDto is null)
+            {
+                _logger.LogError("Valor nulo");
+                return;
+            }
+
+            if (await _boletoService.RegistrarBoleto(boletoDto))
+            {
+                _channel.BasicAck(eventArgs.DeliveryTag, false);
+
+                EnviarMsgParaNovaFila();
+            }
+            else
+                _channel.BasicNack(eventArgs.DeliveryTag, false, false);
         }
     }
 }

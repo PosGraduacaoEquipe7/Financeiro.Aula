@@ -1,6 +1,7 @@
 using Financeiro.Aula.Domain.DTOs;
 using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
+using Financeiro.Aula.Domain.Interfaces.Repositories;
 
 namespace Financeiro.Aula.Domain.Services.DomainServices
 {
@@ -8,6 +9,12 @@ namespace Financeiro.Aula.Domain.Services.DomainServices
     {
         private const double VALOR_MINIMO_PARCELA = 100;
         private const int NUMERO_MAXIMO_PARCELAS = 24;
+        private readonly IParcelaRepository _parcelaRepository;
+
+        public ParcelaService(IParcelaRepository parcelaRepository)
+        {
+            _parcelaRepository = parcelaRepository;
+        }
 
         public GeracaoParcelamentoDto GerarParcelas(double valorTotal, int numeroParcelas, DateTime primeiroVencimento, long contratoId)
         {
@@ -24,6 +31,26 @@ namespace Financeiro.Aula.Domain.Services.DomainServices
                 return new(false, $"O valor mínimo das parcelas deve ser de {VALOR_MINIMO_PARCELA:c2}", null);
             
             return GerarParcelasCorreto(numeroParcelas, primeiroVencimento, contratoId, valorParcelas, valorPrimeiraParcela);
+        }
+
+        public async Task<(bool Sucesso, string Mensagem)> AlterarChaveBoletoParcela(Guid tokenBoleto, string chaveBoleto)
+        {
+            var parcela = await _parcelaRepository.ObterParcelaPeloTokenBoleto(tokenBoleto);
+
+            if (parcela is null)
+                return (false, "Parcela não localizada");
+
+            if (parcela.Paga)
+                return (false, "A parcela já está paga");
+
+            if (parcela.TemBoleto)
+                return (false, "A parcela já tem boleto vinculado");
+
+            parcela.RegistrarBoleto(chaveBoleto);
+
+            await _parcelaRepository.AlterarParcela(parcela);
+
+            return (true, string.Empty);
         }
 
         private static GeracaoParcelamentoDto GerarParcelasCorreto(int numeroParcelas, DateTime primeiroVencimento, long contratoId, double valorParcelas, double valorPrimeiraParcela)

@@ -5,7 +5,9 @@ namespace Financeiro.Aula.Domain.DTOs
 {
     public record ParcelaGerarBoletoDto
     {
-        public string IdentificadorContrato = string.Empty;
+        public Guid TokenRetorno;
+
+        public string IdentificadorContrato;
 
         public DateTime DataVencimento;
 
@@ -15,13 +17,14 @@ namespace Financeiro.Aula.Domain.DTOs
 
         public ParcelaGerarBoletoDto(Parcela parcela)
         {
+            TokenRetorno = parcela.TokenBoleto!.Value;
             IdentificadorContrato = parcela.Contrato!.Id.ToString();
             DataVencimento = parcela.DataVencimento;
             Valor = parcela.Valor;
             Cliente = new ClienteParcelaGerarBoletoDto(
-                parcela.Contrato.Cliente!.Nome,
-                parcela.Contrato.Cliente!.Cpf,
-                parcela.Contrato.Cliente!.Endereco);
+                parcela.Contrato!.Cliente!.Nome,
+                parcela.Contrato!.Cliente!.Cpf,
+                parcela.Contrato!.Cliente!.Endereco);
         }
     }
 

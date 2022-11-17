@@ -1,14 +1,19 @@
+using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Domain.Services.DomainServices;
+using Moq;
 
 namespace Financeiro.Aula.Tests.Domain.Services.DomainServices
 {
     public class ParcelaServiceTests
     {
         private readonly ParcelaService _parcelaService;
+        private readonly IMock<IParcelaRepository> _parcelaRepository;
 
         public ParcelaServiceTests()
         {
-            _parcelaService = new ParcelaService();
+            _parcelaRepository = new Mock<IParcelaRepository>();
+
+            _parcelaService = new ParcelaService(_parcelaRepository.Object);
         }
 
         // Se o número de parcelas informado for zero, não pode ocorrer erro por divisão por zero

@@ -5,6 +5,7 @@ namespace Financeiro.Aula.Domain.Interfaces.Repositories
     public interface IParcelaRepository
     {
         Task<Parcela?> ObterParcela(long id);
+        Task<Parcela?> ObterParcelaPeloTokenBoleto(Guid tokenBoleto);
         Task<IEnumerable<Parcela>> ListarParcelas(long? contratoId);
         Task IncluirParcela(Parcela parcela);
         Task IncluirParcelas(IEnumerable<Parcela> parcelas);

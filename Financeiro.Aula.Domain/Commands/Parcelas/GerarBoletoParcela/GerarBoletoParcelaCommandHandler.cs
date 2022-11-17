@@ -26,8 +26,13 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             if (parcela.Paga)
                 return (false, "A parcela já está paga");
 
+            if (parcela.BoletoPendente)
+                return (false, "A parcela já possui geração de boleto pendente");
+
             if (parcela.TemBoleto && !request.ConfirmaSobrescrever)
                 return (false, "A parcela já possui boleto gerado");
+
+            parcela.GerarNovoTokenBoleto();
 
             await _boletoQueue.EnviarParcelaFilaGerarBoleto(new ParcelaGerarBoletoDto(parcela));
 

@@ -23,6 +23,15 @@ namespace Financeiro.Aula.Infra.Repositories
                             .FirstOrDefaultAsync();
         }
 
+        public async Task<Parcela?> ObterParcelaPeloTokenBoleto(Guid tokenBoleto)
+        {
+            return await _context.Parcelas
+                            .Include(p => p.Contrato)
+                            .ThenInclude(p => p.Cliente)
+                            .Where(p => p.TokenBoleto == tokenBoleto)
+                            .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Parcela>> ListarParcelas(long? contratoId)
         {
             return await _context.Parcelas

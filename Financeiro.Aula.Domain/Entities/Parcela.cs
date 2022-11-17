@@ -16,9 +16,13 @@
 
         public virtual Contrato? Contrato { get; private set; }
 
+        public Guid? TokenBoleto { get; private set; }
+
         public string? ChaveBoleto { get; private set; }
 
         public bool Paga => DataPagamento is not null;
+
+        public bool BoletoPendente => TokenBoleto is not null;
 
         public bool TemBoleto => !string.IsNullOrEmpty(ChaveBoleto);
 
@@ -38,6 +42,11 @@
         public void Pagar()
         {
             DataPagamento = DateTime.Now.Date;
+        }
+        
+        internal void GerarNovoTokenBoleto()
+        {
+            TokenBoleto = new Guid();
         }
 
         public void RegistrarBoleto(string chaveBoleto)

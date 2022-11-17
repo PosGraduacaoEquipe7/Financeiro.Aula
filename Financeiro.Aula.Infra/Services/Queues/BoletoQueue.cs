@@ -4,17 +4,17 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Financeiro.Aula.Domain.Services.Queues
+namespace Financeiro.Aula.Infra.Services.Queues
 {
     public class BoletoQueue : IBoletoQueue
     {
         public Task EnviarParcelaFilaGerarBoleto(ParcelaGerarBoletoDto parcelaDto)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "localhost" }; // TODO: parametrizar
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "hello",
+                channel.QueueDeclare(queue: "hello", // TODO: parametrizar
                                      durable: true,
                                      exclusive: false,
                                      autoDelete: false,
@@ -29,7 +29,7 @@ namespace Financeiro.Aula.Domain.Services.Queues
                                      basicProperties: null,
                                      body: body);
 
-                Console.WriteLine(" [x] Sent {0}", message);
+                Console.WriteLine(" [x] Sent {0}", message); // TODO: logger
             }
 
             return Task.CompletedTask;

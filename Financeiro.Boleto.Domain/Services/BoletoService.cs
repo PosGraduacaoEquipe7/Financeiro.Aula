@@ -30,14 +30,16 @@ namespace Financeiro.Boleto.Domain.Services
             return Convert.ToBase64String(pdf);
         }
 
-        public async Task RegistrarBoleto(BoletoGerarDto boletoDto)
+        public async Task<bool> RegistrarBoleto(BoletoGerarDto boletoDto)
         {
             var boleto = await _geradorBoletoApiService.GerarBoleto(boletoDto);
 
             if (boleto is null)
-                return;
+                return false;
 
             await _boletoRepository.IncluirBoleto(boleto);
+
+            return true;
         }
     }
 }

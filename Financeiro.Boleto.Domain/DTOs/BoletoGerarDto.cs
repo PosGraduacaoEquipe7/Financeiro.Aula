@@ -4,7 +4,7 @@ namespace Financeiro.Boleto.Domain.DTOs
 {
     public record BoletoGerarDto
     {
-        public Guid Id;
+        public Guid TokenRetorno;
 
         public string IdentificadorContrato = string.Empty;
 

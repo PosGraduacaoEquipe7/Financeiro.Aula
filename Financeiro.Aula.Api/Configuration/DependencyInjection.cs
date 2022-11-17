@@ -10,9 +10,7 @@ using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Domain.Services.Queues;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 
 namespace Financeiro.Aula.Api.Configuration
 {
