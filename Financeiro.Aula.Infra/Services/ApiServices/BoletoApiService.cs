@@ -1,20 +1,21 @@
 ﻿using Financeiro.Aula.Domain.Interfaces.ApiServices;
+using Microsoft.Extensions.Logging;
 
 namespace Financeiro.Aula.Infra.Services.ApiServices
 {
     public class BoletoApiService : IBoletoApiService
     {
         private readonly HttpClient _client;
+        private readonly ILogger<BoletoApiService> _logger;
 
-        public BoletoApiService(HttpClient client)
+        public BoletoApiService(HttpClient client, ILogger<BoletoApiService> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
-        public async Task<string?> ObterPdfBoleto(long parcelaId)
+        public async Task<string?> ObterPdfBoleto(string chaveBoleto)
         {
-            // TODO: chamar antes um service para obter a parcela e a chave do boleto
-
             var response = await _client.GetAsync($"boletos/{chaveBoleto}");
 
             if (!response.IsSuccessStatusCode)
@@ -25,7 +26,7 @@ namespace Financeiro.Aula.Infra.Services.ApiServices
                 return null;
             }
 
-            return await response.Content.ReadAsByteArrayAsync();
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

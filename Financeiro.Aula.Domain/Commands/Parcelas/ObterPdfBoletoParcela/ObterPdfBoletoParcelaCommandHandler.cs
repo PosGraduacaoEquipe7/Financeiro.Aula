@@ -1,41 +1,38 @@
-﻿using Financeiro.Aula.Domain.Interfaces.Repositories;
+﻿using Financeiro.Aula.Domain.Interfaces.ApiServices;
+using Financeiro.Aula.Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Parcelas.ObterPdfBoletoParcela
 {
     public class ObterPdfBoletoParcelaCommandHandler : IRequestHandler<ObterPdfBoletoParcelaCommand, (bool Sucesso, string Mensagem, string Pdf)>
     {
-        //private readonly IGeradorBoletoApiService _geradorBoletoApiService;
+        private readonly IBoletoApiService _boletoApiService;
         private readonly IParcelaRepository _parcelaRepository;
 
         public ObterPdfBoletoParcelaCommandHandler(
-            //IGeradorBoletoApiService geradorBoletoApiService,
+            IBoletoApiService boletoApiService,
             IParcelaRepository parcelaRepository)
         {
-            //_geradorBoletoApiService = geradorBoletoApiService;
+            _boletoApiService = boletoApiService;
             _parcelaRepository = parcelaRepository;
         }
 
         public async Task<(bool Sucesso, string Mensagem, string Pdf)> Handle(ObterPdfBoletoParcelaCommand request, CancellationToken cancellationToken)
         {
-            return (false, "Em desenvolvimento", string.Empty);
+            var parcela = await _parcelaRepository.ObterParcela(request.ParcelaId);
 
-            //var parcela = await _parcelaRepository.ObterParcela(request.ParcelaId);
+            if (parcela is null)
+                return (false, "Parcela não localizada", string.Empty);
 
-            //if (parcela is null)
-            //    return (false, "Parcela não localizada", string.Empty);
+            if (!parcela.TemBoleto)
+                return (false, "A parcela não possui boleto gerado", string.Empty);
 
-            //if (!parcela.TemBoleto)
-            //    return (false, "A parcela não possui boleto gerado", string.Empty);
+            var boleto = await _boletoApiService.ObterPdfBoleto(parcela.ChaveBoleto!);
 
-            //var resultado = await _geradorBoletoApiService.ObterPdfBoleto(parcela);
+            if (boleto is null)
+                return (false, "Erro ao obter os dados do boleto", string.Empty);
 
-            //if (!resultado.Sucesso)
-            //    return (false, "Erro ao obter os dados do boleto", string.Empty);
-
-            //string pdf = Convert.ToBase64String(resultado.Pdf);
-
-            //return (true, string.Empty, pdf);
+            return (true, string.Empty, boleto);
         }
     }
 }

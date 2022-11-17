@@ -2,6 +2,6 @@
 {
     public interface IBoletoApiService
     {
-        Task<string?> ObterPdfBoleto(long parcelaId);
+        Task<string?> ObterPdfBoleto(string chaveBoleto);
     }
 }

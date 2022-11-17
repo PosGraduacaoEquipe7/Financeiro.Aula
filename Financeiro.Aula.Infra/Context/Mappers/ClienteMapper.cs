@@ -15,7 +15,16 @@ namespace Financeiro.Aula.Infra.Context.Mappers
                    .HasForeignKey(c => c.ClienteId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.OwnsOne(c => c.Endereco);
+            builder.OwnsOne(c => c.Endereco, (e) =>
+            {
+                e.Property(e => e.Cep).IsRequired();
+                e.Property(e => e.Logradouro).IsRequired();
+                e.Property(e => e.Numero).IsRequired();
+                e.Property(e => e.Complemento);
+                e.Property(e => e.Bairro).IsRequired();
+                e.Property(e => e.Municipio).IsRequired();
+                e.Property(e => e.Uf).IsRequired();
+            });
         }
     }
 }

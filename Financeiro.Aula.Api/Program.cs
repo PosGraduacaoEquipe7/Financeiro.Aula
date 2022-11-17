@@ -10,7 +10,7 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<FinanceiroDb>(options => options.UseSqlite("DataSource=Db/Financeiro.db"));
+builder.Services.AddDbContext<FinanceiroDb>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=ApiAula;Persist Security Info=True;Encrypt=False;User ID=sa;Password=feherr")); // TODO: colocar no appsettings
 
 builder.Services
     .DeclareRepositorys()
@@ -121,15 +121,16 @@ using (var scope = app.Services.CreateScope())
     if (!db.Cursos.Any())
     {
         var curso = new Curso(
-            id: 1,
+            id: 0,
             descricao: "Nutrição",
             cargaHoraria: 100,
             valorBruto: 5000
         );
         db.Cursos.Add(curso);
+        db.SaveChanges();
 
         var turma = new Turma(
-            id: 1,
+            id: 0,
             numero: "1",
             horario: "SEG-QUA-SEX, 19h30-22h30",
             cursoId: curso.Id,

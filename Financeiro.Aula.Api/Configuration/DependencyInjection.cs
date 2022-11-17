@@ -62,10 +62,12 @@ namespace Financeiro.Aula.Api.Configuration
 
             services.AddScoped<IAuthService, AuthService>();
 
-            services.AddHttpClient<IBoletoApiService, BoletoApiService>(client =>
+            services.AddHttpClient<IBoletoApiService, BoletoApiService>((service, client) =>
             {
+                var context = service.GetRequiredService<IHttpContextAccessor>().HttpContext!;
+
                 client.BaseAddress = new Uri(configuration["ApiBoleto:BaseAddress"]);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", context.Header[""]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{context.Request.Headers["Authorization"]}");
             });
 
             return services;
