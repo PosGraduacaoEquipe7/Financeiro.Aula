@@ -8,7 +8,7 @@ namespace Financeiro.Aula.Tests.Domain.Commands.Parcelas.GerarBoletoParcela
     {
         //private readonly Mock<IGeradorBoletoApiService> _geradorBoletoApiService;
         private readonly Mock<IParcelaRepository> _parcelaRepository;
-        private readonly Mock<IBoletoQueue> _boletoQueue;
+        private readonly Mock<IRegistrarBoletoQueue> _boletoQueue;
 
         //private readonly GerarBoletoParcelaCommandHandler _commandHandler;
 
@@ -16,7 +16,7 @@ namespace Financeiro.Aula.Tests.Domain.Commands.Parcelas.GerarBoletoParcela
         {
             //_geradorBoletoApiService = new Mock<IGeradorBoletoApiService>();
             _parcelaRepository = new Mock<IParcelaRepository>();
-            _boletoQueue = new Mock<IBoletoQueue>();
+            _boletoQueue = new Mock<IRegistrarBoletoQueue>();
 
             //_commandHandler = new GerarBoletoParcelaCommandHandler(
             //    _geradorBoletoApiService.Object,

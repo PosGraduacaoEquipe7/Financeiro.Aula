@@ -1,7 +1,7 @@
 using Financeiro.Boleto.Domain.Interfaces.ApiServices;
 using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Domain.Interfaces.Services;
-using Financeiro.Boleto.Domain.Services;
+using Financeiro.Boleto.Domain.Services.ApiServices;
 using Financeiro.Boleto.Infra.Context;
 using Financeiro.Boleto.Infra.Repositories;
 using Financeiro.Boleto.Infra.Services.ApiServices;

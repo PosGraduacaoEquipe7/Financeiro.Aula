@@ -2,7 +2,7 @@
 
 namespace Financeiro.Aula.Domain.Interfaces.Queues
 {
-    public interface IBoletoQueue
+    public interface IRegistrarBoletoQueue
     {
         Task EnviarParcelaFilaGerarBoleto(ParcelaGerarBoletoDto parcelaDto);
     }

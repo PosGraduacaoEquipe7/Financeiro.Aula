@@ -66,8 +66,8 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
 
                 var token = ObterTokenDoHeader(response);
 
+                // TODO: mover isso apra a camada service
                 var boletoDb = new Domain.Entities.Boleto(
-                    boleto.Id,
                     numeroBoleto,
                     token,
                     boleto.DataVencimento,

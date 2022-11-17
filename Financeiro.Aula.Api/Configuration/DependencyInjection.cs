@@ -7,9 +7,9 @@ using Financeiro.Aula.Domain.Interfaces.Services;
 using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
 using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
-using Financeiro.Aula.Domain.Services.Queues;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
+using Financeiro.Aula.Infra.Services.Queues;
 using System.Net.Http.Headers;
 
 namespace Financeiro.Aula.Api.Configuration
@@ -49,7 +49,7 @@ namespace Financeiro.Aula.Api.Configuration
         public static IServiceCollection DeclareQueues(this IServiceCollection services)
         {
             services
-                .AddScoped<IBoletoQueue, BoletoQueue>();
+                .AddScoped<IRegistrarBoletoQueue, RegistrarBoletoQueue>();
 
             return services;
         }

@@ -3,7 +3,7 @@ using Financeiro.Boleto.Domain.Interfaces.ApiServices;
 using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Domain.Interfaces.Services;
 
-namespace Financeiro.Boleto.Domain.Services
+namespace Financeiro.Boleto.Domain.Services.ApiServices
 {
     public class BoletoService : IBoletoService
     {
@@ -30,16 +30,16 @@ namespace Financeiro.Boleto.Domain.Services
             return Convert.ToBase64String(pdf);
         }
 
-        public async Task<bool> RegistrarBoleto(BoletoGerarDto boletoDto)
+        public async Task<Entities.Boleto?> RegistrarBoleto(BoletoGerarDto boletoDto)
         {
             var boleto = await _geradorBoletoApiService.GerarBoleto(boletoDto);
 
             if (boleto is null)
-                return false;
+                return null;
 
             await _boletoRepository.IncluirBoleto(boleto);
 
-            return true;
+            return boleto;
         }
     }
 }

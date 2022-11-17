@@ -36,7 +36,7 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(
-                        queue: _configuration.Queue,
+                        queue: _configuration.Queues.BoletoRegistrado,
                         durable: true,
                         exclusive: false,
                         autoDelete: false,
@@ -52,9 +52,9 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
                 var contentArray = eventArgs.Body.ToArray();
                 var contentString = Encoding.UTF8.GetString(contentArray);
 
-                _logger.LogInformation(contentString);
+                _logger.LogInformation("Recebido na fila: {fila} - Mensagem: {contentString}", _configuration.Queues.BoletoRegistrado, contentString);
 
-                var boletoDto = JsonConvert.DeserializeObject<ParcelaAlterarChaveBoletoDto>(contentString);
+                var boletoDto = JsonConvert.DeserializeObject<BoletoRegistradoDto>(contentString);
 
                 if (boletoDto is null)
                 {
@@ -62,7 +62,7 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
                     return;
                 }
 
-                var retorno = await _parcelaService.AlterarChaveBoletoParcela(boletoDto.IdentificadorParcela, boletoDto.ChaveBoleto);
+                var retorno = await _parcelaService.AlterarChaveBoletoParcela(boletoDto.Token, boletoDto.ChaveBoleto);
 
                 if (retorno.Sucesso)
                     _channel.BasicAck(eventArgs.DeliveryTag, false);
@@ -72,7 +72,7 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
 
             await Task.Run(() =>
             {
-                _channel.BasicConsume(_configuration.Queue, false, consumer);
+                _channel.BasicConsume(_configuration.Queues.BoletoRegistrado, false, consumer);
             });
         }
     }

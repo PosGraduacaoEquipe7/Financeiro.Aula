@@ -8,9 +8,9 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
     public class GerarBoletoParcelaCommandHandler : IRequestHandler<GerarBoletoParcelaCommand, (bool Sucesso, string Mensagem)>
     {
         private readonly IParcelaRepository _parcelaRepository;
-        private readonly IBoletoQueue _boletoQueue;
+        private readonly IRegistrarBoletoQueue _boletoQueue;
 
-        public GerarBoletoParcelaCommandHandler(IParcelaRepository parcelaRepository, IBoletoQueue boletoQueue)
+        public GerarBoletoParcelaCommandHandler(IParcelaRepository parcelaRepository, IRegistrarBoletoQueue boletoQueue)
         {
             _parcelaRepository = parcelaRepository;
             _boletoQueue = boletoQueue;

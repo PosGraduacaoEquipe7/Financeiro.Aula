@@ -20,13 +20,13 @@ namespace Financeiro.Boleto.Domain.Entities
 
         public Endereco Endereco { get; private set; }
 
-        private Boleto() : this(Guid.NewGuid(), string.Empty, string.Empty, DateTime.Now.Date, 0, string.Empty, string.Empty, null!)
+        private Boleto() : this(string.Empty, string.Empty, DateTime.Now.Date, 0, string.Empty, string.Empty, null!)
         {
         }
 
-        public Boleto(Guid id, string numeroBoleto, string chaveBoleto, DateTime dataVencimento, double valor, string nome, string cpf, Endereco endereco)
+        public Boleto(string numeroBoleto, string chaveBoleto, DateTime dataVencimento, double valor, string nome, string cpf, Endereco endereco)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             NumeroBoleto = numeroBoleto;
             ChaveBoleto = chaveBoleto;
             DataVencimento = dataVencimento;
