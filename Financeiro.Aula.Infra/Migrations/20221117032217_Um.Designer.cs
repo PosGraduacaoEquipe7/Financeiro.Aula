@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Financeiro.Aula.Infra.Migrations
 {
     [DbContext(typeof(FinanceiroDb))]
-    [Migration("20221112014454_Um")]
+    [Migration("20221117032217_Um")]
     partial class Um
     {
         /// <inheritdoc />
@@ -145,6 +145,9 @@ namespace Financeiro.Aula.Infra.Migrations
 
                     b.Property<int>("Sequencial")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("TokenBoleto")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Valor")
                         .HasColumnType("float");

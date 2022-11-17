@@ -116,6 +116,7 @@ namespace Financeiro.Aula.Infra.Migrations
                     DataVencimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DataPagamento = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ContratoId = table.Column<long>(type: "bigint", nullable: false),
+                    TokenBoleto = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ChaveBoleto = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

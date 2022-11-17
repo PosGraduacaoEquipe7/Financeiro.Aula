@@ -143,6 +143,9 @@ namespace Financeiro.Aula.Infra.Migrations
                     b.Property<int>("Sequencial")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TokenBoleto")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("Valor")
                         .HasColumnType("float");
 
