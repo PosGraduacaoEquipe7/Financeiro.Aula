@@ -15,7 +15,7 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<BoletoDb>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=ApiBoleto;Persist Security Info=True;Encrypt=False;User ID=sa;Password=feherr")); // TODO: colocar no appsettings
+builder.Services.AddDbContext<BoletoDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services
             .AddScoped<IBoletoService, BoletoService>()
@@ -119,5 +119,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BoletoDb>();
+    db.Database.EnsureCreated();
+}
 
 app.Run();

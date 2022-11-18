@@ -10,8 +10,18 @@ services:
       - "5000:5000"
     depends_on:
       - db
-    # links:
-    #   - db
+    networks:
+      - app
+
+  boleto-api:
+    container_name: boleto-api
+    build:
+      context: ./Financeiro.Boleto
+      dockerfile: Dockerfile
+    ports:
+      - "5050:5050"
+    depends_on:
+      - db
     networks:
       - app
   
@@ -28,14 +38,6 @@ services:
       - sqlvolume:/var/opt/mssql
     networks:
       - app
-
-  # boleto-api:
-  #   container_name: boleto-api
-  #   build:
-  #     context: ./Financeiro.Boleto.Api
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "4000:4050"
 
 volumes:
   sqlvolume:
