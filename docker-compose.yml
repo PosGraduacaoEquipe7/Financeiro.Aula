@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  aula-api:
+    container_name: aula-api
+    build:
+      context: ./Financeiro.Aula.Api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+  
+  # boleto-api:
+  #   container_name: boleto-api
+  #   build:
+  #     context: ./Financeiro.Boleto.Api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "4000:4050"
