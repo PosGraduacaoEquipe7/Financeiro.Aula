@@ -24,6 +24,16 @@ services:
       - db
     networks:
       - app
+
+  # front:
+  #   container_name: front
+  #   build: ./angulardockerproject
+  #   #volumes:
+  #   #  - './angulardockerproject:/usr/src/app' 
+  #   ports: 
+  #     - '4200:4200'
+  #   command: > 
+  #     bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
   
   db:
     container_name: db
@@ -46,9 +56,11 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    #volumes:
-    #    - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-    #    - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    volumes:
+      - ./storage/rabbitmq1:/var/lib/rabbitmq/mnesia
+    # environment:
+    #   - RABBITMQ_DEFAULT_USER = admin
+    #   - RABBITMQ_DEFAULT_PASS = passw123
     networks:
       - app
 
