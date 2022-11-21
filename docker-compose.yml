@@ -25,6 +25,17 @@ services:
     networks:
       - app
 
+  aula-queue:
+    container_name: aula-queue
+    build:
+      context: ./Financeiro.Aula
+      dockerfile: Dockerfile.Queue
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - app
+
   # front:
   #   container_name: front
   #   build: ./angulardockerproject
@@ -58,7 +69,8 @@ services:
       - 15672:15672
     volumes:
       - ./storage/rabbitmq1:/var/lib/rabbitmq/mnesia
-    # environment:
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     #   - RABBITMQ_DEFAULT_USER = admin
     #   - RABBITMQ_DEFAULT_PASS = passw123
     networks:
