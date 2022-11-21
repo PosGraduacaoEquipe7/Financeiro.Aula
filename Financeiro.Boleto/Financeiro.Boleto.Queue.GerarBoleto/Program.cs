@@ -2,9 +2,11 @@ using Financeiro.Boleto.Domain.Interfaces.ApiServices;
 using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Domain.Interfaces.Services;
 using Financeiro.Boleto.Domain.Services.ApiServices;
+using Financeiro.Boleto.Domain.Services.Queues;
 using Financeiro.Boleto.Infra.Context;
 using Financeiro.Boleto.Infra.Repositories;
 using Financeiro.Boleto.Infra.Services.ApiServices;
+using Financeiro.Boleto.Infra.Services.Queues;
 using Financeiro.Boleto.Queue.GerarBoleto;
 using Financeiro.Boleto.Queue.GerarBoleto.Config;
 using Financeiro.Boleto.Queue.GerarBoleto.Scopes;
@@ -17,7 +19,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         var configuration = context.Configuration;
 
-        services.AddDbContext<BoletoDb>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=ApiBoleto;Persist Security Info=True;Encrypt=False;User ID=sa;Password=feherr")); // TODO: colocar no appsettings
+        services.AddDbContext<BoletoDb>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfig"));
 
@@ -25,6 +27,7 @@ IHost host = Host.CreateDefaultBuilder(args)
             .AddScoped<IBoletoService, BoletoService>()
             .AddScoped<IBoletoRepository, BoletoRepository>()
             .AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>()
+            //.AddScoped<IBoletoRegistradoQueue, BoletoRegistradoQueue>()
             .AddScoped<IScopedProcessingService, DefaultScopedProcessingService>();
 
         services.AddHttpClient<IGeradorBoletoApiService, BoletoCloudApiService>(client =>

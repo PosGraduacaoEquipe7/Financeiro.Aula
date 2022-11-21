@@ -13,7 +13,7 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         var configuration = context.Configuration;
 
-        services.AddDbContext<FinanceiroDb>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=ApiBoleto;Persist Security Info=True;Encrypt=False;User ID=sa;Password=feherr")); // TODO: colocar no appsettings
+        services.AddDbContext<FinanceiroDb>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfig"));
 

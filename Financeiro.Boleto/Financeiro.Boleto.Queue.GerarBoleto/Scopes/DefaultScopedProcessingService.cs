@@ -14,7 +14,7 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
     {
         private readonly ILogger<DefaultScopedProcessingService> _logger;
         private readonly IBoletoService _boletoService;
-        private readonly IBoletoRegistradoQueue _boletoRegistradoQueue;
+        //private readonly IBoletoRegistradoQueue _boletoRegistradoQueue;
 
         private readonly RabbitMqConfiguration _configuration;
         private readonly IConnection _connection;
@@ -23,12 +23,12 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
         public DefaultScopedProcessingService(
             ILogger<DefaultScopedProcessingService> logger,
             IBoletoService boletoService,
-            IBoletoRegistradoQueue boletoRegistradoQueue,
+            //IBoletoRegistradoQueue boletoRegistradoQueue,
             IOptions<RabbitMqConfiguration> option)
         {
             _logger = logger;
             _boletoService = boletoService;
-            _boletoRegistradoQueue = boletoRegistradoQueue;
+            //_boletoRegistradoQueue = boletoRegistradoQueue;
 
             _configuration = option.Value;
 
@@ -84,7 +84,7 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
 
             _channel.BasicAck(eventArgs.DeliveryTag, false);
 
-            await _boletoRegistradoQueue.EnviarFilaBoletoRegistrado(new BoletoRegistradoDto(boletoDto.TokenRetorno, boleto.ChaveBoleto));
+            //await _boletoRegistradoQueue.EnviarFilaBoletoRegistrado(new BoletoRegistradoDto(boletoDto.TokenRetorno, boleto.ChaveBoleto));
         }
     }
 }

@@ -36,6 +36,17 @@ services:
     networks:
       - app
 
+  boleto-queue:
+    container_name: boleto-queue
+    build:
+      context: ./Financeiro.Boleto
+      dockerfile: Dockerfile.Queue
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - app
+
   # front:
   #   container_name: front
   #   build: ./angulardockerproject

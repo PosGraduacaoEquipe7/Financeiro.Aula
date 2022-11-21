@@ -24,6 +24,8 @@ namespace Financeiro.Boleto.Infra.Services.Queues
 
             _configuration = option.Value;
 
+            //_logger.LogInformation("Conectando em: {host}", _configuration.Host);
+
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.Host

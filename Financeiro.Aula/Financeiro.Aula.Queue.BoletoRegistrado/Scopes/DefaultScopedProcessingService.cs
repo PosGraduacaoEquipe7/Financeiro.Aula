@@ -31,7 +31,7 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.Host,
-                //Port = 5672
+                //Port = 5672,
             };
 
             _connection = factory.CreateConnection();
