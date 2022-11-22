@@ -47,15 +47,16 @@ services:
     networks:
       - app
 
-  # front:
-  #   container_name: front
-  #   build: ./angulardockerproject
-  #   #volumes:
-  #   #  - './angulardockerproject:/usr/src/app' 
-  #   ports: 
-  #     - '4200:4200'
-  #   command: > 
-  #     bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+  front:
+    container_name: front
+    image: temp_angular
+    #build:
+    #  context: ../financeiro-front
+    #  dockerfile: Dockerfile
+    #volumes:
+    #  - './angulardockerproject:/usr/src/app' 
+    ports: 
+      - '4200:80'
   
   db:
     container_name: db

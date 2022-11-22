@@ -33,6 +33,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
                 return (false, "A parcela já possui boleto gerado");
 
             parcela.GerarNovoTokenBoleto();
+            await _parcelaRepository.AlterarParcela(parcela);
 
             await _boletoQueue.EnviarParcelaFilaGerarBoleto(new ParcelaGerarBoletoDto(parcela));
 

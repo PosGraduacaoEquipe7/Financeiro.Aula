@@ -1,4 +1,5 @@
 using Financeiro.Aula.Api.Services;
+using Financeiro.Aula.Domain.Configurations;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Queues;
@@ -46,9 +47,10 @@ namespace Financeiro.Aula.Api.Configuration
             return services;
         }
 
-        public static IServiceCollection DeclareQueues(this IServiceCollection services)
+        public static IServiceCollection DeclareQueues(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfig"))
                 .AddScoped<IRegistrarBoletoQueue, RegistrarBoletoQueue>();
 
             return services;

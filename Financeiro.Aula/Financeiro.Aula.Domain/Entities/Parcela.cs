@@ -46,7 +46,7 @@
         
         internal void GerarNovoTokenBoleto()
         {
-            TokenBoleto = new Guid();
+            TokenBoleto = Guid.NewGuid();
         }
 
         public void RegistrarBoleto(string chaveBoleto)

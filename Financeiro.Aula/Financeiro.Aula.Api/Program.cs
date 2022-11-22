@@ -16,7 +16,7 @@ builder.Services
     .DeclareRepositorys()
     .DeclareServices()
     .DeclareDomainServices()
-    .DeclareQueues()
+    .DeclareQueues(builder.Configuration)
     .DeclareApiServices(builder.Configuration);
 
 var domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Aula.Domain");
@@ -32,7 +32,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(o =>
 {
-    o.Authority = "http://localhost:8080/realms/myrealm";
+    //o.Authority = "http://localhost:8080/realms/myrealm"; // TODO: appsettings
+    o.Authority = "http://keycloak:8080/realms/myrealm"; // TODO: appsettings
     o.Audience = "account";
     o.RequireHttpsMetadata = false;
 

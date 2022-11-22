@@ -2,10 +2,12 @@
 using Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente;
 using Financeiro.Aula.Domain.Commands.Clientes.ListarClientes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientesController : ControllerBase

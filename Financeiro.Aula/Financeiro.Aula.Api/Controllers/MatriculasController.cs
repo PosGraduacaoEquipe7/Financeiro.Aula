@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Financeiro.Aula.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class MatriculasController : ControllerBase
     {
         private readonly IMediator _mediator;
