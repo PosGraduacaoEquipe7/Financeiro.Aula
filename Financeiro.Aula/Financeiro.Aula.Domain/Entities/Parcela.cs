@@ -22,7 +22,7 @@
 
         public bool Paga => DataPagamento is not null;
 
-        public bool BoletoPendente => TokenBoleto is not null;
+        public bool BoletoPendente => TokenBoleto is not null && ChaveBoleto is null;
 
         public bool TemBoleto => !string.IsNullOrEmpty(ChaveBoleto);
 

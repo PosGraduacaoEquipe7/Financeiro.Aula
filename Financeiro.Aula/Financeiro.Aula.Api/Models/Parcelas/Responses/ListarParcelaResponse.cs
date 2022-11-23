@@ -11,5 +11,9 @@ namespace Financeiro.Aula.Api.Models.Parcelas.Responses
         public DateTime DataVencimento { get; init; }
 
         public bool TemBoleto { get; init; }
+
+        public bool BoletoPendente { get; init; }
+
+        public bool GerarBoleto { get; set; } = false;
     }
 }
