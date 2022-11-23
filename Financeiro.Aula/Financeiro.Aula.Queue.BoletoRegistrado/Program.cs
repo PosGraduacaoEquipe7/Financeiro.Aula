@@ -1,10 +1,10 @@
+using Financeiro.Aula.Domain.Configurations;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Infra.Context;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Queue.BoletoRegistrado;
-using Financeiro.Aula.Queue.BoletoRegistrado.Config;
 using Financeiro.Aula.Queue.BoletoRegistrado.Scopes;
 using Microsoft.EntityFrameworkCore;
 

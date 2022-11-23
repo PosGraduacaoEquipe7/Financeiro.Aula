@@ -16,7 +16,7 @@ namespace Financeiro.Aula.Infra.Services.ApiServices
 
         public async Task<string?> ObterPdfBoleto(string chaveBoleto)
         {
-            var response = await _client.GetAsync($"boletos/{chaveBoleto}");
+            var response = await _client.GetAsync($"api/Boletos/{chaveBoleto}/pdf");
 
             if (!response.IsSuccessStatusCode)
             {

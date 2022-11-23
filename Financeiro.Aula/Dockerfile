@@ -12,6 +12,7 @@ COPY --from=build /app ./
 
 ENV ASPNETCORE_URLS=http://+:5000
 ENV ASPNETCORE_ENVIRONMENT=Development
+ENV TZ=America/Sao_Paulo
 
 EXPOSE 5000
 

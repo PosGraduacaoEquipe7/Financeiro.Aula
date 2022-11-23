@@ -26,7 +26,7 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.GerarBoletoParcela
             if (parcela.Paga)
                 return (false, "A parcela já está paga");
 
-            if (parcela.BoletoPendente)
+            if (parcela.BoletoPendente && !request.ConfirmaSobrescrever)
                 return (false, "A parcela já possui geração de boleto pendente");
 
             if (parcela.TemBoleto && !request.ConfirmaSobrescrever)

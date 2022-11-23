@@ -24,6 +24,8 @@ namespace Financeiro.Aula.Infra.Services.Queues
 
             _configuration = option.Value;
 
+            _logger.LogInformation("Conectando no RabbitMq em: {host}", _configuration.Host);
+
             var factory = new ConnectionFactory
             {
                 HostName = _configuration.Host

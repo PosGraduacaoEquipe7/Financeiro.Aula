@@ -1,6 +1,6 @@
-﻿using Financeiro.Aula.Domain.DTOs;
+﻿using Financeiro.Aula.Domain.Configurations;
+using Financeiro.Aula.Domain.DTOs;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
-using Financeiro.Aula.Queue.BoletoRegistrado.Config;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -28,10 +28,11 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
 
             _configuration = option.Value;
 
+            _logger.LogInformation("Conectando no RabbitMq em: {host}", _configuration.Host);
+
             var factory = new ConnectionFactory
             {
-                HostName = _configuration.Host,
-                //Port = 5672,
+                HostName = _configuration.Host
             };
 
             _connection = factory.CreateConnection();

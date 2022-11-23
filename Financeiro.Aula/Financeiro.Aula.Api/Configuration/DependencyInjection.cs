@@ -66,11 +66,21 @@ namespace Financeiro.Aula.Api.Configuration
             {
                 var context = service.GetRequiredService<IHttpContextAccessor>().HttpContext!;
 
-                client.BaseAddress = new Uri(configuration["ApiBoleto:BaseAddress"]);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{context.Request.Headers["Authorization"]}");
+                client.BaseAddress = new Uri(configuration["ApiBoleto:BaseAddress"] ?? string.Empty);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{RemoverBearer(context.Request.Headers["Authorization"])}");
             });
 
             return services;
+        }
+
+        private static string? RemoverBearer(string? authorization)
+        {
+            if (authorization is null) return null;
+            if (string.IsNullOrEmpty(authorization)) return string.Empty;
+
+            if (authorization.StartsWith("Bearer ")) return authorization.Substring(7);
+
+            return authorization;
         }
     }
 }

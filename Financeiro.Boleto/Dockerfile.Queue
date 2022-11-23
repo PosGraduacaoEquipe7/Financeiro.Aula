@@ -11,6 +11,7 @@ WORKDIR /app
 COPY --from=build /app ./
 
 ENV ASPNETCORE_ENVIRONMENT=Development
+ENV TZ=America/Sao_Paulo
 
 ENTRYPOINT ["dotnet", "Financeiro.Boleto.Queue.GerarBoleto.dll"]
 

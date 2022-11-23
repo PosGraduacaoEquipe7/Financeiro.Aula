@@ -24,7 +24,7 @@ namespace Financeiro.Boleto.Infra.Services.Queues
 
             _configuration = option.Value;
 
-            //_logger.LogInformation("Conectando em: {host}", _configuration.Host);
+            _logger.LogInformation("Conectando no RabbitMq em: {host}", _configuration.Host);
 
             var factory = new ConnectionFactory
             {
