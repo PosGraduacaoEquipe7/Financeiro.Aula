@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Financeiro.Aula.Queue.BoletoRegistrado-12b536de-ded6-4d02-8158-886d84f10186</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Financeiro.Aula.Domain\Financeiro.Aula.Domain.csproj" />
+    <ProjectReference Include="..\Financeiro.Aula.Infra\Financeiro.Aula.Infra.csproj" />
+  </ItemGroup>
+</Project>

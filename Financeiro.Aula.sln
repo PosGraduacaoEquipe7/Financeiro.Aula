@@ -3,16 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Api", "Financeiro.Aula.Api\Financeiro.Aula.Api.csproj", "{F603C8EF-7D41-4105-91C4-96E87E4EA9F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Api", "Financeiro.Aula\Financeiro.Aula.Api\Financeiro.Aula.Api.csproj", "{F603C8EF-7D41-4105-91C4-96E87E4EA9F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Domain", "Financeiro.Aula.Domain\Financeiro.Aula.Domain.csproj", "{736099B9-72EA-40A3-9D7E-8A248820A69E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Domain", "Financeiro.Aula\Financeiro.Aula.Domain\Financeiro.Aula.Domain.csproj", "{736099B9-72EA-40A3-9D7E-8A248820A69E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Infra", "Financeiro.Aula.Infra\Financeiro.Aula.Infra.csproj", "{6ADFD15E-A5CC-49BF-A730-895F854C8716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Infra", "Financeiro.Aula\Financeiro.Aula.Infra\Financeiro.Aula.Infra.csproj", "{6ADFD15E-A5CC-49BF-A730-895F854C8716}"
 	ProjectSection(ProjectDependencies) = postProject
 		{736099B9-72EA-40A3-9D7E-8A248820A69E} = {736099B9-72EA-40A3-9D7E-8A248820A69E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Aula.Tests", "Financeiro.Aula.Tests\Financeiro.Aula.Tests.csproj", "{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Aula.Tests", "Financeiro.Aula\Financeiro.Aula.Tests\Financeiro.Aula.Tests.csproj", "{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Queue.GerarBoleto", "Financeiro.Boleto\Financeiro.Boleto.Queue.GerarBoleto\Financeiro.Boleto.Queue.GerarBoleto.csproj", "{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Financeiro.Aula", "Financeiro.Aula", "{FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queues", "Queues", "{E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Domain", "Financeiro.Boleto\Financeiro.Boleto.Domain\Financeiro.Boleto.Domain.csproj", "{795C4325-F991-4781-980C-63A4B4DA17ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Infra", "Financeiro.Boleto\Financeiro.Boleto.Infra\Financeiro.Boleto.Infra.csproj", "{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Boleto.Api", "Financeiro.Boleto\Financeiro.Boleto.Api\Financeiro.Boleto.Api.csproj", "{FEB8B817-C2F6-4F3F-A170-692F118E7645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Aula.Queue.BoletoRegistrado", "Financeiro.Aula\Financeiro.Aula.Queue.BoletoRegistrado\Financeiro.Aula.Queue.BoletoRegistrado.csproj", "{8691B171-8663-4DE4-8854-B548ED72E66F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,9 +50,40 @@ Global
 		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{795C4325-F991-4781-980C-63A4B4DA17ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{795C4325-F991-4781-980C-63A4B4DA17ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{795C4325-F991-4781-980C-63A4B4DA17ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{795C4325-F991-4781-980C-63A4B4DA17ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8691B171-8663-4DE4-8854-B548ED72E66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691B171-8663-4DE4-8854-B548ED72E66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8691B171-8663-4DE4-8854-B548ED72E66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8691B171-8663-4DE4-8854-B548ED72E66F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F603C8EF-7D41-4105-91C4-96E87E4EA9F0} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
+		{736099B9-72EA-40A3-9D7E-8A248820A69E} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
+		{6ADFD15E-A5CC-49BF-A730-895F854C8716} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
+		{F915A0B5-1988-4A7A-B1F3-B0CEA18DBD90} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
+		{A8E68F2D-C53F-4E10-98D1-726B99C2AC4F} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
+		{795C4325-F991-4781-980C-63A4B4DA17ED} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
+		{0AAE5FCF-9430-497C-B4E7-F1809F9D93BE} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
+		{FEB8B817-C2F6-4F3F-A170-692F118E7645} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
+		{8691B171-8663-4DE4-8854-B548ED72E66F} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {912AB400-8A57-452C-8F94-5CE377462C13}

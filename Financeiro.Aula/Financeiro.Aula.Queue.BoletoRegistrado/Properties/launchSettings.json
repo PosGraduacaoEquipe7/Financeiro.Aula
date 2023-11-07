@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Financeiro.Aula.Queue.BoletoRegistrado": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
