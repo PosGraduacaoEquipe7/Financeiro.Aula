@@ -5,12 +5,15 @@ using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Queues;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Domain.Interfaces.Services;
+using Financeiro.Aula.Domain.Interfaces.Services.CEPs;
 using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
 using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
 using Financeiro.Aula.Infra.Services.Queues;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using System.Net.Http.Headers;
 
 namespace Financeiro.Aula.Api.Configuration
@@ -68,6 +71,82 @@ namespace Financeiro.Aula.Api.Configuration
 
                 client.BaseAddress = new Uri(configuration["ApiBoleto:BaseAddress"] ?? string.Empty);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{RemoverBearer(context.Request.Headers["Authorization"])}");
+            });
+
+            services.AddHttpClient<ICEPService, ViaCEPApiService>(client =>
+            {
+                client.BaseAddress = new Uri(configuration["ApiViaCEP:BaseAddress"] ?? string.Empty);
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddApiSwagger(this IServiceCollection services)
+        {
+            services.AddEndpointsApiExplorer();
+            //builder.Services.AddSwaggerGen();
+            services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter a valid token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
+
+            return services;
+        }
+
+        public static IServiceCollection AddApiAuthentication(this IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            {
+                o.Authority = "http://keycloak:8085/realms/myrealm"; // TODO: appsettings
+                o.Audience = "account";
+                o.RequireHttpsMetadata = false;
+
+                o.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = c =>
+                    {
+                        c.NoResult();
+
+                        c.Response.StatusCode = 500;
+                        c.Response.ContentType = "text/plain";
+                        //if (Environment.IsDevelopment())
+                        //{
+                        //return c.Response.WriteAsync(c.Exception.ToString());
+                        Console.WriteLine(c.Exception.ToString());
+                        return Task.FromResult(string.Empty);
+                        //}
+                        //return c.Response.WriteAsync("An error occured processing your authentication.");
+                    }
+                };
             });
 
             return services;

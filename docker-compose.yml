@@ -47,16 +47,16 @@ services:
     networks:
       - app
 
-  front:
-    container_name: front
-    image: temp_angular
-    #build:
-    #  context: ../financeiro-front
-    #  dockerfile: Dockerfile
-    #volumes:
-    #  - './angulardockerproject:/usr/src/app' 
-    ports: 
-      - '4200:80'
+  #front:
+  #  container_name: front
+  #  image: temp_angular
+  #  #build:
+  #  #  context: ../financeiro-front
+  #  #  dockerfile: Dockerfile
+  #  #volumes:
+  #  #  - './angulardockerproject:/usr/src/app' 
+  #  ports: 
+  #    - '4200:80'
   
   db:
     container_name: db
@@ -95,7 +95,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8080:8080"
+      - "8085:8080"
     volumes:
         - ./storage/keycloak:/opt/keycloak/data
     environment:
