@@ -13,8 +13,10 @@ using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
 using Financeiro.Aula.Infra.Services.Queues;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace Financeiro.Aula.Api.Configuration
 {
@@ -44,6 +46,7 @@ namespace Financeiro.Aula.Api.Configuration
         public static IServiceCollection DeclareDomainServices(this IServiceCollection services)
         {
             services
+                .AddScoped<ICepService, CepService>()
                 .AddScoped<IClienteService, ClienteService>()
                 .AddScoped<IParcelaService, ParcelaService>();
 
@@ -73,7 +76,7 @@ namespace Financeiro.Aula.Api.Configuration
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer", $"{RemoverBearer(context.Request.Headers["Authorization"])}");
             });
 
-            services.AddHttpClient<ICEPService, ViaCEPApiService>(client =>
+            services.AddHttpClient<ICepApiService, ViaCEPApiService>(client =>
             {
                 client.BaseAddress = new Uri(configuration["ApiViaCEP:BaseAddress"] ?? string.Empty);
             });
@@ -117,6 +120,32 @@ namespace Financeiro.Aula.Api.Configuration
         }
 
         public static IServiceCollection AddApiAuthentication(this IServiceCollection services)
+        {
+            var secret = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e"); // TODO: parâmetro
+
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(secret),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            return services;
+        }
+
+        public static IServiceCollection AddKeyCloakAuthentication(this IServiceCollection services)
         {
             services.AddAuthentication(options =>
             {

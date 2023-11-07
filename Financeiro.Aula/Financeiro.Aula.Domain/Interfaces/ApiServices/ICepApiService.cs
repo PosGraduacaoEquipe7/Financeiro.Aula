@@ -1,8 +1,8 @@
 using Financeiro.Aula.Domain.ValueObjects;
 
-namespace Financeiro.Aula.Domain.Interfaces.Services.CEPs
+namespace Financeiro.Aula.Domain.Interfaces.ApiServices
 {
-    public interface ICepService
+    public interface ICepApiService
     {
         Task<Endereco?> BuscarCEP(string cep);
     }

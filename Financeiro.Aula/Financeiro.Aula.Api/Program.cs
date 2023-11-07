@@ -22,6 +22,7 @@ builder.Services.AddMediatR(domainAssembly);
 
 builder.Services.AddControllers();
 
+//builder.Services.AddKeyCloakAuthentication();
 builder.Services.AddApiAuthentication();
 
 builder.Services.AddApiSwagger();

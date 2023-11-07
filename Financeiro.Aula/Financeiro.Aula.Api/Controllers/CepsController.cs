@@ -9,9 +9,9 @@ namespace Financeiro.Aula.Api.Controllers
     [Route("api/[controller]")]
     public class CepsController : ControllerBase
     {
-        private readonly ICEPService _cepService;
+        private readonly ICepService _cepService;
 
-        public CepsController(ICEPService cepService)
+        public CepsController(ICepService cepService)
         {
             _cepService = cepService;
         }

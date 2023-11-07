@@ -1,12 +1,12 @@
 using System.Net.Http.Json;
-using Financeiro.Aula.Domain.Interfaces.Services.CEPs;
+using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.ValueObjects;
 using Financeiro.Aula.Infra.Models.Responses;
 using Microsoft.Extensions.Logging;
 
 namespace Financeiro.Aula.Infra.Services.ApiServices
 {
-    public class ViaCEPApiService : ICEPService
+    public class ViaCEPApiService : ICepApiService
     {
         private readonly HttpClient _client;
         private readonly ILogger<BoletoApiService> _logger;
