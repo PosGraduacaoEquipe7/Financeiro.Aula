@@ -54,9 +54,13 @@ namespace Financeiro.Aula.Queue.BoletoRegistrado.Scopes
                 var contentArray = eventArgs.Body.ToArray();
                 var contentString = Encoding.UTF8.GetString(contentArray);
 
-                _logger.LogInformation("Recebido na fila: {fila} - Mensagem: {contentString}", _configuration.Queues.BoletoRegistrado, contentString);
-
                 var boletoDto = JsonConvert.DeserializeObject<BoletoRegistradoDto>(contentString);
+
+                _logger.LogInformation(
+                        "Recebido retorno do boleto: {boleto} na fila: {fila} - Mensagem: {contentString}",
+                        boletoDto?.Token,
+                        _configuration.Queues.BoletoRegistrado,
+                        contentString);
 
                 if (boletoDto is null)
                 {

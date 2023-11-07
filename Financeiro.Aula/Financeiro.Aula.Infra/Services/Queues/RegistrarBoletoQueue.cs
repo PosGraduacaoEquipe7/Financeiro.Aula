@@ -47,12 +47,16 @@ namespace Financeiro.Aula.Infra.Services.Queues
 
             var body = Encoding.UTF8.GetBytes(message);
 
+            _logger.LogInformation(
+                    "Enviado solicitação de boleto: {boleto} para fila: {fila} - Mensagem: {message}",
+                    parcelaDto.TokenRetorno,
+                    _configuration.Queues.RegistrarBoleto,
+                    message);
+
             _channel.BasicPublish(exchange: "",
                                  routingKey: _configuration.Queues.RegistrarBoleto,
                                  basicProperties: null,
                                  body: body);
-
-            _logger.LogInformation("Enviado mensagem para fila: {fila} - Mensagem: {message}", _configuration.Queues.RegistrarBoleto, message);
 
             return Task.CompletedTask;
         }

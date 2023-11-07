@@ -66,13 +66,17 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
             var contentArray = eventArgs.Body.ToArray();
             var contentString = Encoding.UTF8.GetString(contentArray);
 
-            _logger.LogInformation("Recebido na fila: {fila} - Mensagem: {contentString}", _configuration.Queues.RegistrarBoleto, contentString);
-
             var boletoDto = JsonConvert.DeserializeObject<BoletoGerarDto>(contentString);
+
+            _logger.LogInformation(
+                    "Recebida solicitação do boleto: {boleto} na fila: {fila} - Mensagem: {contentString}",
+                    boletoDto?.TokenRetorno,
+                    _configuration.Queues.RegistrarBoleto,
+                    contentString);
 
             if (boletoDto is null)
             {
-                _logger.LogError("Valor nulo");
+                _logger.LogError("Objeto nulo");
                 return;
             }
 

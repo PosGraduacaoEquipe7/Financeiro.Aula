@@ -49,6 +49,11 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
 
             var body = MontarBodyDaParcela(boleto, numeroBoleto);
 
+            _logger.LogInformation(
+                    "Enviando registro de boleto para Boleto.Cloud. Boleto: {boleto} - Numero: {numeroBoleto}",
+                    boleto.TokenRetorno,
+                    numeroBoleto);
+
             using (var conteudo = new FormUrlEncodedContent(body))
             {
                 conteudo.Headers.Clear();
