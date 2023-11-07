@@ -40,7 +40,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(o =>
 {
-    o.Authority = "http://keycloak:8080/realms/myrealm";
+    o.Authority = "http://keycloak:8085/realms/myrealm";
     o.Audience = "account";
     o.RequireHttpsMetadata = false;
 

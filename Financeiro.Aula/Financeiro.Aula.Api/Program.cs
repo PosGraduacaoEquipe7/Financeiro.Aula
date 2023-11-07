@@ -2,9 +2,7 @@ using Financeiro.Aula.Api.Configuration;
 using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Infra.Context;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -24,67 +22,10 @@ builder.Services.AddMediatR(domainAssembly);
 
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(o =>
-{
-    //o.Authority = "http://localhost:8080/realms/myrealm"; // TODO: appsettings
-    o.Authority = "http://keycloak:8080/realms/myrealm"; // TODO: appsettings
-    o.Audience = "account";
-    o.RequireHttpsMetadata = false;
+//builder.Services.AddKeyCloakAuthentication();
+builder.Services.AddApiAuthentication();
 
-    o.Events = new JwtBearerEvents()
-    {
-        OnAuthenticationFailed = c =>
-        {
-            c.NoResult();
-
-            c.Response.StatusCode = 500;
-            c.Response.ContentType = "text/plain";
-            //if (Environment.IsDevelopment())
-            //{
-            //return c.Response.WriteAsync(c.Exception.ToString());
-            Console.WriteLine(c.Exception.ToString());
-            return Task.FromResult(string.Empty);
-            //}
-            //return c.Response.WriteAsync("An error occured processing your authentication.");
-        }
-    };
-});
-
-builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
+builder.Services.AddApiSwagger();
 
 builder.Services.AddCors(options =>
 {
@@ -104,8 +45,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-//app.UseHttpsRedirection();
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(MyAllowSpecificOrigins);
 
