@@ -1,33 +1,22 @@
 # Financeiro
 
-Projeto da cadeira de **Projeto e Arquitetura de Software** da Pós de Engenharia de Software da Unisinos - 2022.
+Laboratório para estudo de tecnologias back/front/messageria.
 
-## Integrantes
+Projeto da cadeira de **Projeto e Arquitetura de Software** da Pós de Engenharia de Software da Unisinos - 2022, do qual eu era integrante.
 
-* Airton Felipe Sauer de Oliveira
-* Andressa Magnus Friedrichs
-* Felipe Amadeu Junges
-* Marcelo Aloísio da Silva
+## Repositório original
 
-## Docker
+https://github.com/PosGraduacaoEquipe7/Financeiro.Aula
 
-A imagem Docker está disponível no registry: ghcr.io/posgraduacaoequipe7/financeiro.aula:v2
+## TODO/DONE
 
-### Baixar imagem
-```
-docker pull ghcr.io/posgraduacaoequipe7/financeiro.aula:v2
-```
+- [x] Integração boleto
+- [x] RabbitMQ
+- [x] Docker
+- [x] Auth KeyCloak
+- [x] API auth
+- [ ] Front React
+- [ ] React-KeyCloak
+- [ ] Cache Redis (doing)
+- [ ] Elasticsearch/Kibana
 
-### Executar imagem
-```
-docker run -it -p 5000:5000 ghcr.io/posgraduacaoequipe7/financeiro.aula:v2
-```
-
-### Rodar projeto no navegador
-http://localhost:5000/swagger
-
-### Se preferir gerar imagem local e executar
-```
-docker build . -t financeiro.aula
-docker run -it -p 5000:5000 financeiro.aula
-```
