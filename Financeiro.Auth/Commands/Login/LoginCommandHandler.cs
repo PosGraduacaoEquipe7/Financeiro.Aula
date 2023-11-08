@@ -1,7 +1,6 @@
 ﻿using Financeiro.Auth.Interfaces.Repositories;
 using Financeiro.Auth.Interfaces.Services;
 using Financeiro.Auth.Models.Login;
-using Financeiro.Auth.Services;
 using MediatR;
 
 namespace Financeiro.Auth.Commands.Login

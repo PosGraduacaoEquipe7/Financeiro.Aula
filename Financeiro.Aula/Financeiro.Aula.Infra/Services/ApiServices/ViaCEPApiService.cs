@@ -29,6 +29,14 @@ namespace Financeiro.Aula.Infra.Services.ApiServices
                 return null;
             }
 
+            // TODO: tratar o erro:
+            // StatusCode: 200 :/
+            /*
+            {
+                "erro": "true"
+            }
+            */
+
             var result = await response.Content.ReadFromJsonAsync<ViaCEPResponse>();
 
             return MapToEndereco(result);

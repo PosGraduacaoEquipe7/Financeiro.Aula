@@ -100,6 +100,15 @@ services:
     networks:
       - app
 
+  redis:
+    image: redis
+    #command: redis-server --requirepass Redis2019!
+    command: redis-server
+    ports:
+      - "6379:6379"
+    networks:
+      - app
+
   # # Usando API de login própria por enquanto
   # keycloak:
   #   container_name: keycloak

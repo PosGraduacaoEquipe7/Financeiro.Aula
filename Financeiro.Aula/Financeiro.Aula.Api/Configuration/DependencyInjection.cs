@@ -1,12 +1,14 @@
 using Financeiro.Aula.Api.Services;
 using Financeiro.Aula.Domain.Configurations;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
+using Financeiro.Aula.Domain.Interfaces.Cache;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
 using Financeiro.Aula.Domain.Interfaces.Queues;
 using Financeiro.Aula.Domain.Interfaces.Repositories;
 using Financeiro.Aula.Domain.Interfaces.Services;
 using Financeiro.Aula.Domain.Interfaces.Services.CEPs;
 using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
+using Financeiro.Aula.Domain.Services.Cache;
 using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Infra.Repositories;
@@ -38,7 +40,8 @@ namespace Financeiro.Aula.Api.Configuration
         public static IServiceCollection DeclareServices(this IServiceCollection services)
         {
             services
-                .AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>();
+                .AddScoped<IGeradorContratoPdfService, GeradorContratoPdfService>()
+                .AddScoped<ICacheService, CacheService>();
 
             return services;
         }
