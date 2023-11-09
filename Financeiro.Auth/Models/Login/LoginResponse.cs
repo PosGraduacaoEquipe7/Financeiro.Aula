@@ -4,15 +4,17 @@
     {
         public bool Sucesso { get; private set; }
         public string? Token { get; private set; }
+        public string? RefreshToken { get; private set; }
 
-        public LoginResponse(bool sucesso, string? token)
+        public LoginResponse(bool sucesso, string? token, string? refreshToken)
         {
             Sucesso = sucesso;
             Token = token;
+            RefreshToken = refreshToken;
         }
 
-        public static LoginResponse Sucedido(string token) => new LoginResponse(true, token);
+        public static LoginResponse Sucedido(string token, string? refreshToken) => new LoginResponse(true, token, refreshToken);
 
-        public static LoginResponse MalSucedido() => new LoginResponse(false, null);
+        public static LoginResponse MalSucedido() => new LoginResponse(false, null, null);
     }
 }

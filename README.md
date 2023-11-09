@@ -14,11 +14,15 @@ https://github.com/PosGraduacaoEquipe7/Financeiro.Aula
 - [x] Docker
 - [x] Auth KeyCloak
 - [x] API auth
+- [ ] Refresh Token (doing)
 - [ ] Front React
 - [ ] React-KeyCloak
 - [x] Integração CEP
+- [x] Cache Redis para o CEP
 - [ ] Geração do PDF via QuestPDF
-- [ ] Cache Redis (doing)
 - [ ] SonarQube
 - [ ] Elasticsearch/Kibana
+- [ ] Unit tests
+- [ ] Integration tests
 - [ ] Refatoração da arquitetura
+- [ ] Pipeline

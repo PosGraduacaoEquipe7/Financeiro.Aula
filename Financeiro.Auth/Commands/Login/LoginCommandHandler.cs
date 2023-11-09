@@ -9,11 +9,13 @@ namespace Financeiro.Auth.Commands.Login
     {
         private readonly IUsuarioRepository _repository;
         private readonly ITokenService _tokenService;
+        private readonly IAcessoService _acessoService;
 
-        public LoginCommandHandler(IUsuarioRepository repository, ITokenService tokenService)
+        public LoginCommandHandler(IUsuarioRepository repository, ITokenService tokenService, IAcessoService acessoService)
         {
             _repository = repository;
             _tokenService = tokenService;
+            _acessoService = acessoService;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
@@ -23,9 +25,14 @@ namespace Financeiro.Auth.Commands.Login
             if (usuario == null)
                 return LoginResponse.MalSucedido();
 
-            var token = _tokenService.GenerateToken(usuario);
+            var acesso = await _acessoService.GerarAcesso(usuario);
 
-            return LoginResponse.Sucedido(token);
+            var token = _tokenService.GerarToken(
+                acesso.Id.ToString(),
+                usuario.Nome,
+                usuario.Role);
+
+            return LoginResponse.Sucedido(token, acesso.RefreshToken);
         }
     }
 }

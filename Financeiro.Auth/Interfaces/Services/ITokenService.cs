@@ -1,9 +1,9 @@
-using Financeiro.Auth.Entities;
-
 namespace Financeiro.Auth.Interfaces.Services
 {
     public interface ITokenService
     {
-         string GenerateToken(Usuario usuario);
+        string GerarToken(string identifier, string nomeUsuario, string role);
+
+        long? ObterIdentifierDoToken(string token);
     }
 }

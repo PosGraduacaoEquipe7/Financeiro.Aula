@@ -7,6 +7,7 @@
         public string Email { get; private set; }
         public string Senha { get; private set; } // TODO: ValueObject
         public string Role { get; private set; }
+        public ICollection<Acesso> Acessos { get; private set; } = new HashSet<Acesso>();
 
         public Usuario(long id, string nome, string email, string senha, string role)
         {
