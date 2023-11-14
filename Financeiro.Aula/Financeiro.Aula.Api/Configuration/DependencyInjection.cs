@@ -124,7 +124,7 @@ namespace Financeiro.Aula.Api.Configuration
 
         public static IServiceCollection AddApiAuthentication(this IServiceCollection services)
         {
-            var secret = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e"); // TODO: parâmetro
+            var secret = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e"); // TODO: parÃ¢metro
 
             services
                 .AddAuthentication(x =>
@@ -144,6 +144,16 @@ namespace Financeiro.Aula.Api.Configuration
                         ValidateAudience = false
                     };
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq(configuration.GetSection("Serilog"));
+            });
 
             return services;
         }

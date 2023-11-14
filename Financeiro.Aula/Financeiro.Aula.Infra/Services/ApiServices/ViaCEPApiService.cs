@@ -19,6 +19,8 @@ namespace Financeiro.Aula.Infra.Services.ApiServices
 
         public async Task<Endereco?> BuscarCEP(string cep)
         {
+            _logger.LogInformation("Buscando o CEP {cep} na API ViaCEP", cep);
+
             var response = await _client.GetAsync($"{cep}/json/");
 
             if (!response.IsSuccessStatusCode)

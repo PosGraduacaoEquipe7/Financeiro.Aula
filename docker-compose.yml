@@ -85,6 +85,19 @@ services:
     networks:
       - app
 
+  seq:
+    container_name: seq
+    image: datalust/seq:latest
+    ports:
+      - '8008:80'
+      - '5341:5341'
+    environment:
+      ACCEPT_EULA: Y
+    volumes:
+      - sqlvolume:/data
+    networks:
+      - app
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management-alpine
@@ -135,6 +148,7 @@ services:
 
 volumes:
   sqlvolume:
+  seqdata:
 
 networks:
   app:

@@ -33,6 +33,8 @@ builder.Services.AddApiAuthentication();
 
 builder.Services.AddApiSwagger();
 
+builder.Services.AddSerilog(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,
