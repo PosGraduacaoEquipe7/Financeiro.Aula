@@ -20,15 +20,12 @@ namespace Financeiro.Aula.Domain.Commands.Parcelas.ListarParcelas
 
         public async Task<IEnumerable<Parcela>> Handle(ListarParcelasCommand request, CancellationToken cancellationToken)
         {
-            var logado = _authService.UsuarioLogado;
-            var usuario = _authService.UsuarioId;
-
-            if (!logado)
+            if (!_authService.UsuarioLogado)
                 return Enumerable.Empty<Parcela>();
 
             var contrato = await _contratoRepository.ObterContrato(request.ContratoId!.Value);
 
-            if (contrato?.Cliente?.UsuarioId != usuario)
+            if (contrato?.Cliente?.UsuarioId != _authService.UsuarioId)
                 return Enumerable.Empty<Parcela>();
 
             return await _parcelaRepository.ListarParcelas(request.ContratoId);

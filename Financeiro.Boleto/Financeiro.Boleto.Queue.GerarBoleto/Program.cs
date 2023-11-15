@@ -23,6 +23,11 @@ IHost host = Host.CreateDefaultBuilder(args)
 
         services.Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfig"));
 
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddSeq(configuration.GetSection("SeqLog"));
+        });
+
         services
             .AddScoped<IBoletoService, BoletoService>()
             .AddScoped<IBoletoRepository, BoletoRepository>()

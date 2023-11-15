@@ -18,7 +18,9 @@ namespace Financeiro.Aula.Infra.Repositories
         {
             return await _context.Parcelas
                             .Include(p => p.Contrato)
+#nullable disable
                             .ThenInclude(p => p.Cliente)
+#nullable restore
                             .Where(p => p.Id == id)
                             .FirstOrDefaultAsync();
         }
@@ -27,7 +29,9 @@ namespace Financeiro.Aula.Infra.Repositories
         {
             return await _context.Parcelas
                             .Include(p => p.Contrato)
+#nullable disable
                             .ThenInclude(p => p.Cliente)
+#nullable restore
                             .Where(p => p.TokenBoleto == tokenBoleto)
                             .FirstOrDefaultAsync();
         }

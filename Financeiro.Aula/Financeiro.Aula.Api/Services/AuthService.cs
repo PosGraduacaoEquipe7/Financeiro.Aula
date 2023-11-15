@@ -9,9 +9,9 @@ namespace Financeiro.Aula.Api.Services
 
         public bool UsuarioLogado => _context.User.Identity?.IsAuthenticated ?? false;
 
-        public string UsuarioId => _context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("Usuário não logado");
+        public string UsuarioId => _context.User.Identity?.Name ?? throw new Exception("Usuário não logado");
 
-        public string NomeUsuario => _context.User.Identity?.Name ?? throw new Exception("Usuário não logado");
+        public string NomeUsuario => _context.User.FindFirst(ClaimTypes.GivenName)?.Value ?? throw new Exception("Usuário não logado");
 
         public AuthService(IHttpContextAccessor contextAccessor)
         {

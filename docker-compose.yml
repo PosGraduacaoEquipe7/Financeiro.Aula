@@ -94,7 +94,7 @@ services:
     environment:
       ACCEPT_EULA: Y
     volumes:
-      - sqlvolume:/data
+      - seqdata:/data
     networks:
       - app
 
@@ -105,7 +105,7 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - ./storage/rabbitmq1:/var/lib/rabbitmq/mnesia
+      - ./storage/rabbitmq1:/var/lib/rabbitmq
     environment:
       - RABBITMQ_HOST=rabbitmq
     #   - RABBITMQ_DEFAULT_USER = admin
@@ -119,6 +119,8 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
+    volumes:
+      - ./storage/redis:/data
     networks:
       - app
 

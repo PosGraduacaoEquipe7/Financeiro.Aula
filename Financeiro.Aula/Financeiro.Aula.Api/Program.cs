@@ -33,7 +33,7 @@ builder.Services.AddApiAuthentication();
 
 builder.Services.AddApiSwagger();
 
-builder.Services.AddSerilog(builder.Configuration);
+builder.Services.AddApiSeqLogging(builder.Configuration);
 
 builder.Services.AddCors(options =>
 {

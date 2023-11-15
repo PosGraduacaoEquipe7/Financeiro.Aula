@@ -1,3 +1,4 @@
+using Financeiro.Boleto.Api.Configuration;
 using Financeiro.Boleto.Domain.Interfaces.ApiServices;
 using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Domain.Interfaces.Services;
@@ -5,7 +6,6 @@ using Financeiro.Boleto.Domain.Services.ApiServices;
 using Financeiro.Boleto.Infra.Context;
 using Financeiro.Boleto.Infra.Repositories;
 using Financeiro.Boleto.Infra.Services.ApiServices;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Net.Http.Headers;
@@ -30,38 +30,15 @@ builder.Services.AddHttpClient<IGeradorBoletoApiService, BoletoCloudApiService>(
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(token)));
 });
 
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddSeq(builder.Configuration.GetSection("SeqLog"));
+});
+
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(o =>
-{
-    o.Authority = "http://keycloak:8085/realms/myrealm";
-    o.Audience = "account";
-    o.RequireHttpsMetadata = false;
-
-    o.Events = new JwtBearerEvents()
-    {
-        OnAuthenticationFailed = c =>
-        {
-            c.NoResult();
-
-            c.Response.StatusCode = 500;
-            c.Response.ContentType = "text/plain";
-            //if (Environment.IsDevelopment())
-            //{
-            //return c.Response.WriteAsync(c.Exception.ToString());
-            Console.WriteLine(c.Exception.ToString());
-            return Task.FromResult(string.Empty);
-            //}
-            //return c.Response.WriteAsync("An error occured processing your authentication.");
-        }
-    };
-});
+//builder.Services.AddKeyCloakAuthentication();
+builder.Services.AddApiAuthentication();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>

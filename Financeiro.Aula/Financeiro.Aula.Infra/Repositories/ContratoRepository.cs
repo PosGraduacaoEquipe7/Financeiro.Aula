@@ -27,7 +27,9 @@ namespace Financeiro.Aula.Infra.Repositories
             return await _context.Contratos
                             .Include(c => c.Parcelas)
                             .Include(c => c.Cliente)
+#nullable disable
                                 .ThenInclude(cl => cl.Endereco)
+#nullable restore
                             .Include(c => c.Turma)
                                 .ThenInclude(cl => cl.Curso)
                             .Where(c => c.Id == id)

@@ -122,6 +122,16 @@ namespace Financeiro.Aula.Api.Configuration
             return services;
         }
 
+        public static IServiceCollection AddApiSeqLogging(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq(configuration.GetSection("SeqLog"));
+            });
+
+            return services;
+        }
+
         public static IServiceCollection AddApiAuthentication(this IServiceCollection services)
         {
             var secret = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e"); // TODO: parâmetro
@@ -144,16 +154,6 @@ namespace Financeiro.Aula.Api.Configuration
                         ValidateAudience = false
                     };
                 });
-
-            return services;
-        }
-
-        public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddSeq(configuration.GetSection("Serilog"));
-            });
 
             return services;
         }

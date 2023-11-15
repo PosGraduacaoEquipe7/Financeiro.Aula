@@ -43,6 +43,7 @@ namespace Financeiro.Auth.Commands.RefreshToken
 
             var token = _tokenService.GerarToken(
                 acesso.Id.ToString(),
+                usuario.Id.ToString(),
                 usuario.Nome,
                 usuario.Role);
 

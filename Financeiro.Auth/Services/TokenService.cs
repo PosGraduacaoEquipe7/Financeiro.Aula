@@ -10,7 +10,7 @@ namespace Financeiro.Auth.Services
     {
         private const string SECRET = "fedaf7d8863b48e197b9287d492b708e"; // TODO: parâmetro
 
-        public string GerarToken(string identifier, string nomeUsuario, string role)
+        public string GerarToken(string identifier, string usuarioId, string nomeUsuario, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(SECRET);
@@ -19,7 +19,8 @@ namespace Financeiro.Auth.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, identifier),
-                    new Claim(ClaimTypes.Name, nomeUsuario),
+                    new Claim(ClaimTypes.Name, usuarioId),
+                    new Claim(ClaimTypes.GivenName, nomeUsuario),
                     new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
