@@ -6,9 +6,10 @@ namespace Financeiro.Boleto.Api.Configuration
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApiAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var secret = Encoding.ASCII.GetBytes("fedaf7d8863b48e197b9287d492b708e"); // TODO: parâmetro
+            var keySecret = configuration.GetSection("Auth:KeySecret")?.Value ?? throw new NullReferenceException("'Auth:KeySecret' deve ser configurado no appsettings.json");
+            var secret = Encoding.ASCII.GetBytes(keySecret);
 
             services
                 .AddAuthentication(x =>

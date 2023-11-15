@@ -38,7 +38,7 @@ builder.Services.AddLogging(loggingBuilder =>
 builder.Services.AddControllers();
 
 //builder.Services.AddKeyCloakAuthentication();
-builder.Services.AddApiAuthentication();
+builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>

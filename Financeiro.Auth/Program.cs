@@ -1,3 +1,4 @@
+using Financeiro.Auth.Configuration;
 using Financeiro.Auth.Context;
 using Financeiro.Auth.Entities;
 using Financeiro.Auth.Interfaces.Repositories;
@@ -21,6 +22,9 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(domainAssembly);
 });
+
+var authConfiguration = builder.Configuration.GetSection("Auth").Get<AuthConfiguration>() ?? throw new NullReferenceException("'Auth' deve ser configurado no appsettings.json");
+builder.Services.AddSingleton(authConfiguration);
 
 builder.Services
     .AddScoped<IAcessoRepository, AcessoRepository>()

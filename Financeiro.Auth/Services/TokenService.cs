@@ -1,4 +1,5 @@
-﻿using Financeiro.Auth.Interfaces.Services;
+﻿using Financeiro.Auth.Configuration;
+using Financeiro.Auth.Interfaces.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,12 +9,17 @@ namespace Financeiro.Auth.Services
 {
     public class TokenService : ITokenService
     {
-        private const string SECRET = "fedaf7d8863b48e197b9287d492b708e"; // TODO: parâmetro
+        private AuthConfiguration _configuration { get; }
+
+        public TokenService(AuthConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public string GerarToken(string identifier, string usuarioId, string nomeUsuario, string role)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(SECRET);
+            var key = Encoding.ASCII.GetBytes(_configuration.KeySecret);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -23,10 +29,13 @@ namespace Financeiro.Auth.Services
                     new Claim(ClaimTypes.GivenName, nomeUsuario),
                     new Claim(ClaimTypes.Role, role)
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.Add(_configuration.Expires),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
             return tokenHandler.WriteToken(token);
         }
 
@@ -47,16 +56,16 @@ namespace Financeiro.Auth.Services
 
         private ClaimsPrincipal? ObterPrincipalDoTokenExpirado(string token)
         {
-            var key = Encoding.ASCII.GetBytes(SECRET);
+            var key = Encoding.ASCII.GetBytes(_configuration.KeySecret);
             var signingKey = new SymmetricSecurityKey(key);
 
             var tokenValidationParameters = new TokenValidationParameters()
             {
-                ValidateAudience = false,
-                ValidateIssuer = false,
+                ValidateLifetime = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
-                ValidateLifetime = false // não valida expiração
+                ValidateAudience = false,
+                ValidateIssuer = false
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

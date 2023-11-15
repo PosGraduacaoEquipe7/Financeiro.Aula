@@ -29,7 +29,7 @@ builder.Services.AddStackExchangeRedisCache(opt =>
 });
 
 //builder.Services.AddKeyCloakAuthentication();
-builder.Services.AddApiAuthentication();
+builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddApiSwagger();
 
