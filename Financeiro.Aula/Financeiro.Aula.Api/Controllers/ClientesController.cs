@@ -1,6 +1,7 @@
 ﻿using Financeiro.Aula.Domain.Commands.Clientes.AlterarCliente;
 using Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente;
 using Financeiro.Aula.Domain.Commands.Clientes.ListarClientes;
+using Financeiro.Aula.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,8 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListarClientes([FromQuery] string? nome)
+        [ProducesResponseType(typeof(IEnumerable<ListarClientesCommandResult>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ListarClientesCommandResult>> ListarClientes([FromQuery] string? nome)
         {
             var clientes = await _mediator.Send(new ListarClientesCommand(nome));
 
@@ -28,7 +30,8 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IncluirCliente([FromBody] IncluirClienteCommand request)
+        [ProducesResponseType(typeof(Cliente), StatusCodes.Status201Created)]
+        public async Task<ActionResult<Cliente>> IncluirCliente([FromBody] IncluirClienteCommand request)
         {
             var cliente = await _mediator.Send(request);
 

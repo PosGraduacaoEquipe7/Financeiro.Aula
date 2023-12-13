@@ -16,9 +16,9 @@
 
         public string Uf { get; private set; }
 
-        private Endereco() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
-        {
-        }
+        // private Endereco() : this(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty)
+        // {
+        // }
 
         public Endereco(string cep, string logradouro, string numero, string? complemento, string bairro, string municipio, string uf)
         {

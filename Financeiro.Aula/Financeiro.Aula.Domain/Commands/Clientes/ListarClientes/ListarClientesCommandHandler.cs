@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Clientes.ListarClientes
 {
-    public class ListarClientesCommandHandler : IRequestHandler<ListarClientesCommand, IEnumerable<Cliente>>
+    public class ListarClientesCommandHandler : IRequestHandler<ListarClientesCommand, IEnumerable<ListarClientesCommandResult>>
     {
         private readonly IClienteRepository _clienteRepository;
 
@@ -13,9 +13,17 @@ namespace Financeiro.Aula.Domain.Commands.Clientes.ListarClientes
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<IEnumerable<Cliente>> Handle(ListarClientesCommand request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ListarClientesCommandResult>> Handle(ListarClientesCommand request, CancellationToken cancellationToken)
         {
-            return await _clienteRepository.ListarClientes(request.Nome);
+            var clientes = await _clienteRepository.ListarClientes(request.Nome);
+
+            return clientes.Select(MapClienteResult);
         }
+
+        private ListarClientesCommandResult MapClienteResult(Cliente cliente)
+            => new ListarClientesCommandResult(
+                cliente.Id,
+                cliente.Nome,
+                cliente.Email);
     }
 }

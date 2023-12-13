@@ -32,6 +32,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Financeiro.Auth", "Financei
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 - API auth", "00 - API auth", "{125879D0-C4C4-40B5-BFBB-8FCD99937E8C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Commom", "03 - Commom", "{75A7E477-53F2-4553-9E17-DEC98F99B3FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Financeiro.Commom", "Financeiro.Commom\Financeiro.Commom.csproj", "{3B03F45D-A584-4424-8261-24E4C1CA63EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +82,10 @@ Global
 		{9B27D2BF-7736-418E-80B3-AF438D7B484F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B27D2BF-7736-418E-80B3-AF438D7B484F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B27D2BF-7736-418E-80B3-AF438D7B484F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B03F45D-A584-4424-8261-24E4C1CA63EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B03F45D-A584-4424-8261-24E4C1CA63EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B03F45D-A584-4424-8261-24E4C1CA63EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B03F45D-A584-4424-8261-24E4C1CA63EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +101,7 @@ Global
 		{FEB8B817-C2F6-4F3F-A170-692F118E7645} = {E7A4FF50-2740-40CD-81C3-B67BAFF2BAF7}
 		{8691B171-8663-4DE4-8854-B548ED72E66F} = {FF3ECAB3-D6A2-44E2-8055-051B6BDD4C80}
 		{9B27D2BF-7736-418E-80B3-AF438D7B484F} = {125879D0-C4C4-40B5-BFBB-8FCD99937E8C}
+		{3B03F45D-A584-4424-8261-24E4C1CA63EE} = {75A7E477-53F2-4553-9E17-DEC98F99B3FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {912AB400-8A57-452C-8F94-5CE377462C13}

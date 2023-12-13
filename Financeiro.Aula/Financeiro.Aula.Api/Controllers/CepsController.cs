@@ -1,4 +1,5 @@
 using Financeiro.Aula.Domain.Interfaces.Services.CEPs;
+using Financeiro.Aula.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,10 @@ namespace Financeiro.Aula.Api.Controllers
         }
 
         [HttpGet("/api/Cep/{cep}/endereco")]
-        public async Task<IActionResult> ObterEnderecoPeloCEP(string cep)
+        [ProducesResponseType(typeof(Endereco), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Endereco>> ObterEnderecoPeloCEP(string cep)
         {
             var endereco = await _cepService.BuscarCEP(cep);
 

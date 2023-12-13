@@ -1,9 +1,8 @@
-﻿using Financeiro.Aula.Domain.Entities;
-using MediatR;
+﻿using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Clientes.ListarClientes
 {
-    public class ListarClientesCommand : IRequest<IEnumerable<Cliente>>
+    public class ListarClientesCommand : IRequest<IEnumerable<ListarClientesCommandResult>>
     {
         public string? Nome { get; private set; }
 

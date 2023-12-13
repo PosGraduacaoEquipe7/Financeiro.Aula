@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente
 {
-    public class IncluirClienteCommandHandler : IRequestHandler<IncluirClienteCommand, Cliente>
+    public class IncluirClienteCommandHandler : IRequestHandler<IncluirClienteCommand, Cliente?>
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly IAuthService _authService;
@@ -16,8 +16,15 @@ namespace Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente
             _authService = authService;
         }
 
-        public async Task<Cliente> Handle(IncluirClienteCommand request, CancellationToken cancellationToken)
+        public async Task<Cliente?> Handle(IncluirClienteCommand request, CancellationToken cancellationToken)
         {
+            // TODO: pipeline ou filter
+            var validation = new IncluirClienteCommandValidator().Validate(request);
+            if (!validation.IsValid)
+            {
+                throw new InvalidOperationException(validation.ToString());
+            }
+
             var cliente = new Cliente(
                 id: 0,
                 usuarioId: _authService.UsuarioId,

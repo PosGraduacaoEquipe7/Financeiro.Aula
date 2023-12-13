@@ -1,4 +1,5 @@
 using Financeiro.Aula.Api.Services;
+using Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente;
 using Financeiro.Aula.Domain.Configurations;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.Cache;
@@ -14,6 +15,7 @@ using Financeiro.Aula.Domain.Services.PDFs;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
 using Financeiro.Aula.Infra.Services.Queues;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -55,6 +57,15 @@ namespace Financeiro.Aula.Api.Configuration
 
             return services;
         }
+
+        public static IServiceCollection DeclareValidators(this IServiceCollection services)
+        {
+            services
+                .AddScoped<IValidator<IncluirClienteCommand>, IncluirClienteCommandValidator>();
+
+            return services;
+        }
+
 
         public static IServiceCollection DeclareQueues(this IServiceCollection services, IConfiguration configuration)
         {

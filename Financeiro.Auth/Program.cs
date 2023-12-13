@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 Assembly domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Auth");
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +37,17 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:4200", "http://localhost:5173", "http://127.0.0.1:5173")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -44,6 +57,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

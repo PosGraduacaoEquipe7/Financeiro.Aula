@@ -3,6 +3,7 @@ using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Infra.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -14,13 +15,16 @@ builder.Services
     .DeclareRepositorys()
     .DeclareServices()
     .DeclareDomainServices()
+    .DeclareValidators()
     .DeclareQueues(builder.Configuration)
     .DeclareApiServices(builder.Configuration);
 
 var domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Aula.Domain");
 builder.Services.AddMediatR(domainAssembly);
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddStackExchangeRedisCache(opt =>
 {
@@ -40,7 +44,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:4200")
+                          policy.WithOrigins("http://localhost:4200", "http://localhost:5173", "http://127.0.0.1:5173")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
