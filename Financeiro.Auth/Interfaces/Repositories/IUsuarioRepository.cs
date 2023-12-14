@@ -4,6 +4,6 @@ namespace Financeiro.Auth.Interfaces.Repositories
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario?> ObterUsuario(string email, string senha);
+        Task<Usuario?> ObterUsuarioPeloEmail(string email);
     }
 }

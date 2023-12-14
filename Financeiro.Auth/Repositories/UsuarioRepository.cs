@@ -13,9 +13,9 @@ namespace Financeiro.Auth.Repositories
             _db = db;
         }
 
-        public Task<Usuario?> ObterUsuario(string email, string senha)
+        public Task<Usuario?> ObterUsuarioPeloEmail(string email)
         {
-            return Task.FromResult(_db.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha));
+            return Task.FromResult(_db.Usuarios.FirstOrDefault(u => u.Email == email));
         }
     }
 }

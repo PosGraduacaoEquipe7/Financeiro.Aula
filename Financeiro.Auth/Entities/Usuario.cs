@@ -1,11 +1,13 @@
-﻿namespace Financeiro.Auth.Entities
+﻿using Financeiro.Auth.ValueObjects;
+
+namespace Financeiro.Auth.Entities
 {
     public class Usuario
     {
         public long Id { get; private set; }
         public string Nome { get; private set; }
         public string Email { get; private set; }
-        public string Senha { get; private set; } // TODO: ValueObject
+        public Senha Senha { get; private set; }
         public string Role { get; private set; }
         public ICollection<Acesso> Acessos { get; private set; } = new HashSet<Acesso>();
 

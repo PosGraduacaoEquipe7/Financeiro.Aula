@@ -20,9 +20,9 @@ namespace Financeiro.Auth.Commands.Login
 
         public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
         {
-            var usuario = await _repository.ObterUsuario(command.Request.Email, command.Request.Senha);
+            var usuario = await _repository.ObterUsuarioPeloEmail(command.Request.Email);
 
-            if (usuario == null)
+            if (usuario == null || !usuario.Senha.Check(command.Request.Senha))
                 return LoginResponse.MalSucedido();
 
             var acesso = await _acessoService.GerarAcesso(usuario);
