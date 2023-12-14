@@ -66,12 +66,14 @@ namespace Financeiro.Aula.Api.Configuration
             return services;
         }
 
-
         public static IServiceCollection DeclareQueues(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .Configure<RabbitMqConfiguration>(configuration.GetSection("RabbitMqConfig"))
-                .AddScoped<IRegistrarBoletoQueue, RegistrarBoletoQueue>();
+                .AddScoped<IRegistrarBoletoQueue, RegistrarBoletoQueue>()
+                .AddScoped<IBoletoRegistradoQueueConsumer, BoletoRegistradoQueueConsumer>();
+
+            services.AddHostedService<BoletoRegistradoService>();
 
             return services;
         }

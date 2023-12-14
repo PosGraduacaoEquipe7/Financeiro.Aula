@@ -1,11 +1,15 @@
 using Financeiro.Boleto.Api.Configuration;
+using Financeiro.Boleto.Api.Services;
+using Financeiro.Boleto.Domain.Configuration;
 using Financeiro.Boleto.Domain.Interfaces.ApiServices;
+using Financeiro.Boleto.Domain.Interfaces.Queues;
 using Financeiro.Boleto.Domain.Interfaces.Repositories;
 using Financeiro.Boleto.Domain.Interfaces.Services;
 using Financeiro.Boleto.Domain.Services.ApiServices;
 using Financeiro.Boleto.Infra.Context;
 using Financeiro.Boleto.Infra.Repositories;
 using Financeiro.Boleto.Infra.Services.ApiServices;
+using Financeiro.Boleto.Infra.Services.Queues;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Net.Http.Headers;
@@ -20,7 +24,12 @@ builder.Services.AddDbContext<BoletoDb>(options => options.UseSqlServer(builder.
 builder.Services
             .AddScoped<IBoletoService, BoletoService>()
             .AddScoped<IBoletoRepository, BoletoRepository>()
-            .AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>();
+            .AddScoped<IParametroBoletoRepository, ParametroBoletoRepository>()
+            .Configure<RabbitMqConfiguration>(builder.Configuration.GetSection("RabbitMqConfig"))
+            .AddScoped<IBoletoRegistradoQueue, BoletoRegistradoQueue>()
+            .AddScoped<IRegistrarBoletoQueueConsumer, RegistrarBoletoQueueConsumer>();
+
+builder.Services.AddHostedService<RegistrarBoletoService>();
 
 builder.Services.AddHttpClient<IGeradorBoletoApiService, BoletoCloudApiService>(client =>
 {

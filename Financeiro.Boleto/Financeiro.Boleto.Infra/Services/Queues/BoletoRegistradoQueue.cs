@@ -1,6 +1,6 @@
 ﻿using Financeiro.Boleto.Domain.Configuration;
 using Financeiro.Boleto.Domain.DTOs;
-using Financeiro.Boleto.Domain.Services.Queues;
+using Financeiro.Boleto.Domain.Interfaces.Queues;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

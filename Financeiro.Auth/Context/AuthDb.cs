@@ -13,6 +13,7 @@ namespace Financeiro.Auth.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AcessoMapper());
             modelBuilder.ApplyConfiguration(new UsuarioMapper());
 
             base.OnModelCreating(modelBuilder);

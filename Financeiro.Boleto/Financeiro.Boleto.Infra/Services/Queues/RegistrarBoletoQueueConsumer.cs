@@ -1,33 +1,35 @@
 ﻿using Financeiro.Boleto.Domain.Configuration;
 using Financeiro.Boleto.Domain.DTOs;
+using Financeiro.Boleto.Domain.Interfaces.Queues;
 using Financeiro.Boleto.Domain.Interfaces.Services;
-using Financeiro.Boleto.Domain.Services.Queues;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
-namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
+namespace Financeiro.Boleto.Infra.Services.Queues
 {
-    public class DefaultScopedProcessingService : IScopedProcessingService
+    public class RegistrarBoletoQueueConsumer : IRegistrarBoletoQueueConsumer
     {
-        private readonly ILogger<DefaultScopedProcessingService> _logger;
-        private readonly IBoletoService _boletoService;
+        private readonly ILogger<RegistrarBoletoQueueConsumer> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly IBoletoRegistradoQueue _boletoRegistradoQueue;
 
         private readonly RabbitMqConfiguration _configuration;
         private readonly IConnection _connection;
         private readonly IModel _channel;
 
-        public DefaultScopedProcessingService(
-            ILogger<DefaultScopedProcessingService> logger,
-            IBoletoService boletoService,
+        public RegistrarBoletoQueueConsumer(
+            ILogger<RegistrarBoletoQueueConsumer> logger,
+            IServiceScopeFactory scopeFactory,
             IBoletoRegistradoQueue boletoRegistradoQueue,
             IOptions<RabbitMqConfiguration> option)
         {
             _logger = logger;
-            _boletoService = boletoService;
+            _scopeFactory = scopeFactory;
             _boletoRegistradoQueue = boletoRegistradoQueue;
 
             _configuration = option.Value;
@@ -49,7 +51,7 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
                         arguments: null);
         }
 
-        public async Task DoWorkAsync(CancellationToken stoppingToken)
+        public async Task Execute(CancellationToken cancellationToken)
         {
             var consumer = new EventingBasicConsumer(_channel);
 
@@ -80,7 +82,9 @@ namespace Financeiro.Boleto.Queue.GerarBoleto.Scopes
                 return;
             }
 
-            var boleto = await _boletoService.RegistrarBoleto(boletoDto);
+            using var scope = _scopeFactory.CreateScope();
+            var boletoService = scope.ServiceProvider.GetRequiredService<IBoletoService>();
+            var boleto = await boletoService.RegistrarBoleto(boletoDto);
 
             if (boleto is null)
             {

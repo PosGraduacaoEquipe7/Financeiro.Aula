@@ -1,6 +1,6 @@
 ﻿using Financeiro.Boleto.Domain.DTOs;
 
-namespace Financeiro.Boleto.Domain.Services.Queues
+namespace Financeiro.Boleto.Domain.Interfaces.Queues
 {
     public interface IBoletoRegistradoQueue
     {
