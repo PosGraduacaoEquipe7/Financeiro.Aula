@@ -16,16 +16,14 @@ https://github.com/PosGraduacaoEquipe7/Financeiro.Aula
 - [x] MediatR
 - [x] RabbitMQ
 - [x] Docker
-- [x] Auth KeyCloak
+- [x] Auth KeyCloak (desativado)
 - [x] API auth
 - [x] Refresh Token
-- [ ] Front React
-- [ ] React-KeyCloak
+- [ ] Front React/Angular
 - [x] Integração CEP
 - [x] Cache Redis para o CEP
 - [ ] Geração do PDF via QuestPDF
 - [ ] SonarQube
-- [ ] ~~Elasticsearch/Kibana~~
 - [x] Seq Log
 - [ ] Unit tests
 - [ ] Integration tests
