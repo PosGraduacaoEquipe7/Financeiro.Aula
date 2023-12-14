@@ -1,12 +1,12 @@
 # Build
-FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 WORKDIR /source
 COPY . .
 RUN dotnet restore "Financeiro.Auth.csproj"
 RUN dotnet publish "Financeiro.Auth.csproj" -c release -o /app --no-restore
 
 # Run
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
 

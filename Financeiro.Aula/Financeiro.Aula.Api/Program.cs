@@ -1,7 +1,7 @@
 using Financeiro.Aula.Api.Configuration;
+using Financeiro.Aula.Domain;
 using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Infra.Context;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -19,8 +19,7 @@ builder.Services
     .DeclareQueues(builder.Configuration)
     .DeclareApiServices(builder.Configuration);
 
-var domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Aula.Domain");
-builder.Services.AddMediatR(domainAssembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(DomainAssemblyReference.Assembly));
 
 builder.Services
     .AddControllers()

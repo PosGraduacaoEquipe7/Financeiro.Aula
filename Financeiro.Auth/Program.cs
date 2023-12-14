@@ -6,12 +6,9 @@ using Financeiro.Auth.Interfaces.Services;
 using Financeiro.Auth.Repositories;
 using Financeiro.Auth.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using System.Text.Json.Serialization;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-Assembly domainAssembly = AppDomain.CurrentDomain.Load("Financeiro.Auth");
+var _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +17,7 @@ builder.Services.AddDbContext<AuthDb>(options => options.UseSqlServer(builder.Co
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(domainAssembly);
-});
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
 var authConfiguration = builder.Configuration.GetSection("Auth").Get<AuthConfiguration>() ?? throw new NullReferenceException("'Auth' deve ser configurado no appsettings.json");
 builder.Services.AddSingleton(authConfiguration);
@@ -39,7 +33,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(MyAllowSpecificOrigins,
+    options.AddPolicy(_myAllowSpecificOrigins,
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:4200", "http://localhost:5173", "http://127.0.0.1:5173")
@@ -58,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(_myAllowSpecificOrigins);
 
 app.UseAuthorization();
 

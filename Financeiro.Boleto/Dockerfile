@@ -1,12 +1,12 @@
 # Build
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 WORKDIR /source
 COPY . .
 RUN dotnet restore "Financeiro.Boleto.Api/Financeiro.Boleto.Api.csproj"
 RUN dotnet publish "Financeiro.Boleto.Api/Financeiro.Boleto.Api.csproj" -c release -o /app --no-restore
 
 # Run
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
 
