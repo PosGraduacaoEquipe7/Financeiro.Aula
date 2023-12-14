@@ -6,6 +6,10 @@ Projeto originalmente criado na cadeira de **Projeto e Arquitetura de Software**
 
 https://github.com/PosGraduacaoEquipe7/Financeiro.Aula
 
+## Diagrama
+
+![Alt text](diagrama_solucao.drawio.png)
+
 ## TODO/DONE
 
 - [x] Integração boleto
