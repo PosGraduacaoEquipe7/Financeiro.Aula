@@ -50,15 +50,17 @@ namespace Financeiro.Aula.Api.Configuration
 
                     CriarDadosIniciais(db);
 
+                    logger?.LogInformation("Criada database FinanceiroDb");
+
                     return app;
                 }
                 catch (Exception ex)
                 {
-                    logger?.LogError(ex, "Não foi possível conectar ao FinanceiroDb Context. Tentativa {tentativa}", tentativa);
+                    logger?.LogError(ex, "NÃ£o foi possÃ­vel conectar ao FinanceiroDb Context. Tentativa {tentativa}", tentativa);
                 }
             }
 
-            throw new DataException("Não foi possível conectar no FinanceiroDb depois de 10 tentativas");
+            throw new DataException("NÃ£o foi possÃ­vel conectar no FinanceiroDb depois de 10 tentativas");
         }
 
         private static void CriarDadosIniciais(FinanceiroDb db)
@@ -67,7 +69,7 @@ namespace Financeiro.Aula.Api.Configuration
             {
                 var curso = new Curso(
                     id: 0,
-                    descricao: "Nutrição",
+                    descricao: "Nutriï¿½ï¿½o",
                     cargaHoraria: 100,
                     valorBruto: 5000
                 );

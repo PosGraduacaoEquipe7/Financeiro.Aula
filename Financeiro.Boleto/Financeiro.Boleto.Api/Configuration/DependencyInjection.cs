@@ -27,15 +27,17 @@ namespace Financeiro.Boleto.Api.Configuration
                     var db = scope.ServiceProvider.GetRequiredService<BoletoDb>();
                     db.Database.EnsureCreated();
 
+                    logger?.LogInformation("Criada database BoletoDb");
+
                     return app;
                 }
                 catch (Exception ex)
                 {
-                    logger?.LogError(ex, "Não foi possível conectar ao BoletoDb Context. Tentativa {tentativa}", tentativa);
+                    logger?.LogError(ex, "NÃ£o foi possÃ­vel conectar ao BoletoDb Context. Tentativa {tentativa}", tentativa);
                 }
             }
 
-            throw new DataException("Não foi possível conectar no BoletoDb depois de 10 tentativas");
+            throw new DataException("NÃ£o foi possÃ­vel conectar no BoletoDb depois de 10 tentativas");
         }
 
         public static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)

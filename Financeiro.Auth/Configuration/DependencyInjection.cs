@@ -27,6 +27,8 @@ namespace Financeiro.Auth.Configuration
 
                     CriarDadosIniciais(db);
 
+                    logger?.LogInformation("Criada database AuthDb");
+
                     return app;
                 }
                 catch (Exception ex)
