@@ -35,7 +35,9 @@ builder.Services.AddHttpClient<IGeradorBoletoApiService, BoletoCloudApiService>(
 {
     var token = $"{builder.Configuration["ApiBoletoCloud:ApiKey"]}:token";
 
-    client.BaseAddress = new Uri(builder.Configuration["ApiBoletoCloud:BaseAddress"]);
+    var boletoCloudUrl = builder.Configuration["ApiBoletoCloud:BaseAddress"] ?? throw new NullReferenceException("'ApiBoletoCloud:BaseAddress' deve ser configurado no appsettings.json");
+
+    client.BaseAddress = new Uri(boletoCloudUrl);
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(token)));
 });
 
@@ -106,10 +108,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<BoletoDb>();
-    db.Database.EnsureCreated();
-}
+app.EnsureDbCreated();
 
 app.Run();

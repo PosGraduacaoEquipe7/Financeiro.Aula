@@ -1,6 +1,7 @@
 using Financeiro.Aula.Api.Services;
 using Financeiro.Aula.Domain.Commands.Clientes.IncluirCliente;
 using Financeiro.Aula.Domain.Configurations;
+using Financeiro.Aula.Domain.Entities;
 using Financeiro.Aula.Domain.Interfaces.ApiServices;
 using Financeiro.Aula.Domain.Interfaces.Cache;
 using Financeiro.Aula.Domain.Interfaces.DomainServices;
@@ -12,6 +13,7 @@ using Financeiro.Aula.Domain.Interfaces.Services.PDFs;
 using Financeiro.Aula.Domain.Services.Cache;
 using Financeiro.Aula.Domain.Services.DomainServices;
 using Financeiro.Aula.Domain.Services.PDFs;
+using Financeiro.Aula.Infra.Context;
 using Financeiro.Aula.Infra.Repositories;
 using Financeiro.Aula.Infra.Services.ApiServices;
 using Financeiro.Aula.Infra.Services.Queues;
@@ -19,6 +21,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -26,6 +29,65 @@ namespace Financeiro.Aula.Api.Configuration
 {
     public static class DependencyInjection
     {
+        public static IHost EnsureDbCreated(this IHost app)
+        {
+            int tentativa = 0;
+
+            var logger = app.Services.GetService<ILogger<Program>>();
+
+            while (tentativa < 10)
+            {
+                tentativa++;
+
+                logger?.LogInformation("Aguardando {tempo} segundos para criar FinanceiroDb", tentativa);
+                Thread.Sleep(tentativa * 1000);
+
+                try
+                {
+                    var scope = app.Services.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<FinanceiroDb>();
+                    db.Database.EnsureCreated();
+
+                    CriarDadosIniciais(db);
+
+                    return app;
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError(ex, "Não foi possível conectar ao FinanceiroDb Context. Tentativa {tentativa}", tentativa);
+                }
+            }
+
+            throw new DataException("Não foi possível conectar no FinanceiroDb depois de 10 tentativas");
+        }
+
+        private static void CriarDadosIniciais(FinanceiroDb db)
+        {
+            if (!db.Cursos.Any())
+            {
+                var curso = new Curso(
+                    id: 0,
+                    descricao: "Nutrição",
+                    cargaHoraria: 100,
+                    valorBruto: 5000
+                );
+                db.Cursos.Add(curso);
+                db.SaveChanges();
+
+                var turma = new Turma(
+                    id: 0,
+                    numero: "1",
+                    horario: "SEG-QUA-SEX, 19h30-22h30",
+                    cursoId: curso.Id,
+                    dataInicio: new DateTime(2023, 3, 6),
+                    dataTermino: new DateTime(2023, 6, 30)
+                );
+                db.Turmas.Add(turma);
+
+                db.SaveChanges();
+            }
+        }
+
         public static IServiceCollection DeclareRepositorys(this IServiceCollection services)
         {
             services

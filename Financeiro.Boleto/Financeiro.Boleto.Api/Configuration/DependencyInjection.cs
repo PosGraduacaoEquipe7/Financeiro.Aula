@@ -1,11 +1,43 @@
+using Financeiro.Boleto.Infra.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Text;
 
 namespace Financeiro.Boleto.Api.Configuration
 {
     public static class DependencyInjection
     {
+        public static IHost EnsureDbCreated(this IHost app)
+        {
+            int tentativa = 0;
+
+            var logger = app.Services.GetService<ILogger<Program>>();
+
+            while (tentativa < 10)
+            {
+                tentativa++;
+
+                logger?.LogInformation("Aguardando {tempo} segundos para criar BoletoDb", tentativa);
+                Thread.Sleep(tentativa * 1000);
+
+                try
+                {
+                    using var scope = app.Services.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<BoletoDb>();
+                    db.Database.EnsureCreated();
+
+                    return app;
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError(ex, "Não foi possível conectar ao BoletoDb Context. Tentativa {tentativa}", tentativa);
+                }
+            }
+
+            throw new DataException("Não foi possível conectar no BoletoDb depois de 10 tentativas");
+        }
+
         public static IServiceCollection AddApiAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var keySecret = configuration.GetSection("Auth:KeySecret")?.Value ?? throw new NullReferenceException("'Auth:KeySecret' deve ser configurado no appsettings.json");

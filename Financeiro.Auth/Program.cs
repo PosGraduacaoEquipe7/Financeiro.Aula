@@ -58,17 +58,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AuthDb>();
-    db.Database.EnsureCreated();
-
-    if (!db.Usuarios.Any())
-    {
-        db.Usuarios.Add(new Usuario(0, "Felipe", "felipejunges@yahoo.com.br", "felipe123", "Admin"));
-
-        db.SaveChanges();
-    }
-}
+app.EnsureDbCreated();
 
 app.Run();
