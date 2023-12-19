@@ -1,6 +1,5 @@
 using Financeiro.Auth.Configuration;
 using Financeiro.Auth.Context;
-using Financeiro.Auth.Entities;
 using Financeiro.Auth.Interfaces.Repositories;
 using Financeiro.Auth.Interfaces.Services;
 using Financeiro.Auth.Repositories;
@@ -27,6 +26,11 @@ builder.Services
     .AddScoped<IUsuarioRepository, UsuarioRepository>()
     .AddScoped<ITokenService, TokenService>()
     .AddScoped<IAcessoService, AcessoService>();
+
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddSeq(builder.Configuration.GetSection("SeqLog"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
