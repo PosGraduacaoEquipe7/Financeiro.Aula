@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Financeiro.Boleto.Infra.Services.ApiServices
 {
-    public class BoletoCloudApiService: IGeradorBoletoApiService
+    public class BoletoCloudApiService : IGeradorBoletoApiService
     {
         private readonly ILogger<BoletoCloudApiService> _logger;
         private readonly HttpClient _client;
@@ -37,16 +37,8 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
             return await response.Content.ReadAsByteArrayAsync();
         }
 
-        public async Task<Domain.Entities.Boleto?> GerarBoleto(BoletoGerarDto boleto)
+        public async Task<string?> GerarTokenBoleto(BoletoGerarDto boleto, string numeroBoleto)
         {
-            if (_parametroBoleto is null)
-            {
-                _logger.LogError("Os parâmetros do boleto não estão setados");
-                return null;
-            }
-
-            var numeroBoleto = _parametroBoleto.ObterProximoNumeroFormatado();
-
             var body = MontarBodyDaParcela(boleto, numeroBoleto);
 
             _logger.LogInformation(
@@ -69,29 +61,13 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
                     return null;
                 }
 
-                var token = ObterTokenDoHeader(response);
-
-                // TODO: mover isso apra a camada service
-                var boletoDb = new Domain.Entities.Boleto(
-                    numeroBoleto,
-                    token,
-                    boleto.DataVencimento,
-                    boleto.Valor,
-                    boleto.Cliente.Nome,
-                    boleto.Cliente.Cpf,
-                    boleto.Cliente.Endereco);
-
-                //var bytes = await response.Content.ReadAsByteArrayAsync();
-
-                return boletoDb;
+                return ObterTokenDoHeader(response);
             }
         }
 
         private Dictionary<string, string> MontarBodyDaParcela(BoletoGerarDto boleto, string numeroBoleto)
         {
             var cliente = boleto.Cliente;
-
-            // TODO: carregar os dados da empresa
 
             var body = new Dictionary<string, string>
             {
@@ -131,7 +107,7 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
             return body;
         }
 
-        private static string ObterTokenDoHeader(HttpResponseMessage response)
+        private static string? ObterTokenDoHeader(HttpResponseMessage response)
         {
             if (response.Headers.Contains("Location"))
             {
@@ -145,7 +121,7 @@ namespace Financeiro.Boleto.Infra.Services.ApiServices
                 }
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }
