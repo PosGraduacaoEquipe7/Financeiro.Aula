@@ -63,6 +63,12 @@ namespace Financeiro.Boleto.Infra.Services.Queues
             });
         }
 
+        public void Close()
+        {
+            _channel.Close();
+            _connection.Close();
+        }
+
         private async void Consumer_Received(object? sender, BasicDeliverEventArgs eventArgs)
         {
             var contentArray = eventArgs.Body.ToArray();

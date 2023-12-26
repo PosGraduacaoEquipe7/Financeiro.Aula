@@ -3,5 +3,6 @@
     public interface IRegistrarBoletoQueueConsumer
     {
         Task Execute(CancellationToken cancellationToken);
+        void Close();
     }
 }
