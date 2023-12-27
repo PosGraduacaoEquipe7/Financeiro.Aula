@@ -2,7 +2,7 @@
 
 namespace Financeiro.Aula.Api.Services
 {
-    public class BoletoRegistradoService : BackgroundService
+    public class BoletoRegistradoService : IHostedService
     {
         private readonly IBoletoRegistradoQueueConsumer _queue;
 
@@ -13,18 +13,18 @@ namespace Financeiro.Aula.Api.Services
             _queue = scope.ServiceProvider.GetRequiredService<IBoletoRegistradoQueueConsumer>();
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
-            _queue.Execute(stoppingToken);
+            _queue.Execute(cancellationToken);
 
             return Task.CompletedTask;
         }
 
-        public override void Dispose()
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             _queue.Close();
 
-            base.Dispose();
+            return Task.CompletedTask;
         }
     }
 }
